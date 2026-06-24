@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L.S Now — Segurança Inteligente</title>
+<link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+   Para alterar as cores doSSDSD tema, edite aqui:
+   ══════════════════════════════════════════ */
+:root{
+  /* --- CORES PRINCIPAIS --- */
+  /* Fundo das seções escuras (hero, etc.) */
+  --black: #0d0d0d;
+  /* Fundo levemente mais claro (seções alternadas) */
+  --dark:  #141414;
+  /* Fundo dos cards e containers */
+  --dark2: #1c1c1e;
+  /* Fundo de elementos elevados */
+  --dark3: #252528;
+  /* Bordas e separadores */
+  --gray:  #2e2e32;
+  /* Texto secundário */
+  --mid:   #6b6b70;
+  /* Texto muted */
+  --light: #9a9aa0;
+  /* Texto principal */
+  --white: #f0f0f3;
+
+  /* --- ACENTO DOURADO --- */
+  --gold:  #f5c400;
+  --gold2: #ffdd00;
+
+  /* --- OUTROS ACENTOS --- */
+  --blue:  #0a84ff;
+  --accent:#32d74b;
+
+  --font: 'Outfit', sans-serif;
+
+  /* ──────────────────────────────────────
+     PARA VOLTAR AO PRETO ORIGINAL:
+     substitua as cores acima por:
+     --black:#000; --dark:#0a0a0a;
+     --dark2:#111; --dark3:#1a1a1a;
+     --gray:#222; --mid:#555;
+     --light:#aaa; --white:#f5f5f7;
+     ────────────────────────────────────── */
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:auto;}
+/* CURSOR PADRÃO — personalizado removido */
+body{font-family:var(--font);background:var(--black);color:var(--white);overflow-x:hidden;cursor:auto;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:9000;padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,13,13,.88);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid rgba(255,255,255,.07);}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--white);text-decoration:none;letter-spacing:-.03em;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:rgba(240,240,243,.65);text-decoration:none;font-size:.78rem;font-weight:400;letter-spacing:.02em;transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{background:var(--gold);color:#000;border:none;padding:7px 16px;border-radius:980px;font-family:var(--font);font-size:.78rem;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
+.nav-cta:hover{background:var(--gold2);transform:scale(1.02);}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;}
+.nav-ham span{width:22px;height:1.5px;background:var(--white);border-radius:2px;transition:all .3s;display:block;}
+
+/* ── HERO ── */
+.hero{
+  position:relative;height:100vh;min-height:700px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  overflow:hidden;background:var(--black);
+}
+.hero-orbs{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,#f5c400,transparent);top:-200px;left:-100px;}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,#0a84ff,transparent);bottom:-100px;right:10%;}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,#32d74b,transparent);top:30%;right:-50px;}
+/* Grid removed — was causing the lines bug */
+
+/* VAN PHOTO — covers right half */
+.hero-cam-wrap{
+  position:absolute;right:0;top:0;bottom:0;
+  width:55%;pointer-events:none;opacity:0;z-index:1;overflow:hidden;
+}
+.hero-cam-wrap::before{
+  content:'';position:absolute;inset:0;z-index:2;
+  background:linear-gradient(90deg,var(--black) 0%,rgba(13,13,13,.8) 20%,rgba(13,13,13,.25) 55%,transparent 100%);
+}
+.hero-cam-wrap::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:32%;z-index:3;
+  background:linear-gradient(to top,var(--black),transparent);
+}
+.hero-van-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 60%;
+  filter:brightness(.82) contrast(1.04) saturate(.85);
+  will-change:transform;transform:scale(1.04);
+}
+.hero-van-accent{
+  position:absolute;right:0;top:8%;bottom:8%;width:2px;z-index:4;
+  background:linear-gradient(to bottom,transparent,var(--gold),transparent);opacity:.4;
+}
+
+/* HERO TEXT — centralizado */
+.hero-label{
+  position:relative;z-index:2;
+  font-size:.7rem;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:18px;opacity:0;text-align:center;
+}
+.hero h1{
+  position: relative;
+    z-index: 2;
+    font-size: clamp(3rem, 7.5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto; /* Centraliza o bloco */
+    padding: 0 clamp(20px, 5vw, 80px);
+    opacity: 1; /* Caso haja animação, garanta que esteja visível */
+}
+.hero h1 span {
+    display: block;
+}
+
+.hero h1 .line1 {
+  display: block;          /* Força a quebra de linha */
+  color: var(--white);     /* Mantém o texto branco */
+}
+
+.hero h1 .line2 {
+  display: block;          /* Força a quebra de linha */
+  color: var(--gold);      /* Texto em dourado */
+}
+.hero-sub{
+    position: relative;
+  z-index: 2;
+  margin-top: 22px;
+  font-size: clamp(.92rem, 1.6vw, 1.1rem);
+  font-weight: 300;
+  color: rgba(240, 240, 243, 0.65);
+  text-align: center;
+  max-width: 480px;
+  padding: 0 20px;
+  line-height: 1.65;
+  opacity: 0;
+}
+.hero-actions{
+  position:relative;z-index:2;
+  display:flex;gap:16px;margin-top:36px;
+  flex-wrap:wrap;justify-content:center;opacity:0;
+}
+/* SCROLL HINT — position fixed below buttons, not overlapping */
+.hero-scroll-hint{
+  position:absolute;bottom:32px;left:50%;
+  transform:translateX(-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;
+  pointer-events:none;
+}
+.scroll-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.5),transparent);
+  animation:scrollDown 2s ease-in-out infinite;
+}
+@keyframes scrollDown{
+  0%{transform:scaleY(0);transform-origin:top;}
+  50%{transform:scaleY(1);transform-origin:top;}
+  51%{transform:scaleY(1);transform-origin:bottom;}
+  100%{transform:scaleY(0);transform-origin:bottom;}
+}
+.scroll-txt{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28);}
+
+/* BUTTONS */
+.btn-gold{
+  background:var(--gold);color:#000;border:none;
+  padding:13px 26px;border-radius:980px;
+  font-family:var(--font);font-size:.9rem;font-weight:700;
+  cursor:pointer;text-decoration:none;
+  transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.02);}
+.btn-ghost{
+  background:transparent;color:var(--gold);
+  border:1px solid rgba(245,196,0,.4);
+  padding:13px 26px;border-radius:980px;
+  font-family:var(--font);font-size:.9rem;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:all .2s;
+}
+.btn-ghost:hover{border-color:var(--gold);background:rgba(245,196,0,.08);}
+
+/* ── SECTIONS ── */
+.section{padding:120px 0;position:relative;overflow:hidden;}
+.section-dark{background:var(--dark);}
+.section-mid{background:var(--dark2);}
+.container{max-width:1100px;margin:0 auto;padding:0 48px;}
+.tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.headline{font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:800;line-height:1.12;letter-spacing:-.03em;color:var(--white);}
+.headline em{font-style:normal;color:var(--gold);}
+.subtext{font-size:.97rem;font-weight:300;color:var(--light);line-height:1.75;max-width:520px;margin-top:18px;}
+
+/* ── STORY ── */
+.story-section{background:#f5f5f7;padding:0;}
+.story-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.story-panels{height:400vh;position:relative;}
+.story-panel-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;max-width:700px;width:100%;padding:0 24px;}
+.story-panel-text h2{font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:800;line-height:1.1;letter-spacing:-.04em;color:#0d0d0d;}
+.story-panel-text p{font-size:1.05rem;color:#555;font-weight:300;margin-top:18px;line-height:1.7;}
+
+/* ── FEATURES ── */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray);border:1px solid var(--gray);border-radius:20px;overflow:hidden;margin-top:64px;}
+.feature-cell{background:var(--dark2);padding:44px 32px;transition:background .3s;}
+.feature-cell:hover{background:var(--dark3);}
+.feature-icon-wrap{width:48px;height:48px;background:rgba(245,196,0,.1);border:1px solid rgba(245,196,0,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.feature-icon-wrap svg{color:var(--gold);}
+.feature-cell h3{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;}
+.feature-cell p{font-size:.83rem;color:var(--light);line-height:1.65;}
+
+/* ── SERVICES ── */
+.services-section{background:var(--dark2);}
+.services-header{text-align:center;margin-bottom:56px;}
+.services-grid-6{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.svc-card{background:var(--dark3);border:1px solid var(--gray);border-radius:18px;overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;}
+.svc-card:hover{border-color:rgba(245,196,0,.4);transform:translateY(-5px);box-shadow:0 14px 40px rgba(0,0,0,.35);}
+.svc-num{position:absolute;top:14px;left:18px;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);opacity:.55;}
+.svc-icon-area{padding:48px 26px 20px;display:flex;align-items:center;gap:14px;}
+.svc-icon{width:48px;height:48px;background:rgba(245,196,0,.1);border:1px solid rgba(245,196,0,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.svc-icon svg{color:var(--gold);}
+.svc-title{font-size:clamp(.9rem,1.3vw,1.1rem);font-weight:700;letter-spacing:-.02em;line-height:1.3;}
+.svc-body{padding:0 26px 26px;}
+.svc-desc{font-size:.8rem;color:var(--light);line-height:1.65;margin-bottom:18px;}
+.svc-btn{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;color:var(--gold);background:rgba(245,196,0,.08);border:1px solid rgba(245,196,0,.2);border-radius:50px;padding:7px 14px;transition:all .2s;cursor:pointer;}
+.svc-btn:hover{background:rgba(245,196,0,.16);gap:10px;}
+
+/* ── SERVICE MODAL ── */
+.svc-modal-overlay{position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.88);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.svc-modal-overlay.open{opacity:1;pointer-events:all;}
+.svc-modal{background:var(--dark2);border:1px solid var(--gray);border-radius:22px;max-width:820px;width:100%;max-height:88vh;overflow-y:auto;transform:scale(.96);transition:transform .35s cubic-bezier(.23,1,.32,1);}
+.svc-modal-overlay.open .svc-modal{transform:scale(1);}
+.svc-modal-header{padding:26px 26px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.svc-modal-title{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;}
+.svc-modal-close{width:34px;height:34px;border-radius:50%;background:var(--dark3);border:1px solid var(--gray);color:var(--white);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0;}
+.svc-modal-close:hover{background:var(--gray);}
+.svc-modal-body{padding:18px 26px 28px;}
+.svc-modal-desc{font-size:.88rem;color:var(--light);line-height:1.7;margin-bottom:22px;}
+/* Gallery with real images */
+.svc-modal-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.gallery-real-img{
+  aspect-ratio:4/3;border-radius:12px;overflow:hidden;
+  background:var(--dark3);border:1px solid var(--gray);
+  position:relative;
+}
+.gallery-real-img img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .4s ease;
+}
+.gallery-real-img:hover img{transform:scale(1.05);}
+.gallery-real-img .img-label{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(0,0,0,.75),transparent);
+  color:rgba(255,255,255,.85);font-size:.65rem;font-weight:600;
+  padding:8px 10px;letter-spacing:.04em;
+}
+/* Placeholder slot (when no image) */
+.gallery-slot{aspect-ratio:4/3;background:var(--dark3);border:1.5px dashed rgba(245,196,0,.2);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;gap:6px;}
+.gallery-slot svg{opacity:.25;color:var(--gold);}
+.gallery-slot-label{font-size:.63rem;color:var(--mid);letter-spacing:.04em;line-height:1.4;}
+.gallery-slot-model{font-size:.72rem;font-weight:700;color:rgba(245,196,0,.6);margin-top:2px;}
+.gallery-hint{font-size:.52rem;color:var(--mid);font-style:italic;}
+.svc-modal-cta{margin-top:22px;display:flex;justify-content:flex-end;}
+
+/* ── STATS ── */
+.stats-section{background:var(--dark3);padding:90px 0;border-top:1px solid var(--gray);border-bottom:1px solid var(--gray);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--gray);}
+.stat-cell{background:var(--dark3);padding:44px 32px;text-align:center;}
+.stat-num{font-size:clamp(2.6rem,5vw,3.8rem);font-weight:800;letter-spacing:-.04em;color:var(--gold);line-height:1;}
+.stat-unit{font-size:1.4rem;vertical-align:super;}
+.stat-label{font-size:.75rem;color:var(--light);margin-top:6px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;}
+
+/* ── DEMO ── */
+.demo-section{background:var(--dark);padding:120px 0;}
+.demo-wrap{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
+.demo-screen{position:relative;border-radius:20px;overflow:hidden;background:var(--dark2);border:1px solid var(--gray);aspect-ratio:4/3;}
+.demo-screen-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.demo-cam-view{width:100%;height:100%;background:radial-gradient(ellipse 40% 40% at 60% 40%,rgba(0,50,80,.8),transparent),linear-gradient(160deg,#050d14,#0a1a24,#040d14);position:relative;}
+.demo-scan-line{position:absolute;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,200,255,.6),transparent);animation:demoScan 4s linear infinite;}
+@keyframes demoScan{0%{top:0;}100%{top:100%;}}
+.demo-grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(0,200,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,.04) 1px,transparent 1px);background-size:40px 40px;}
+.demo-hud{position:absolute;top:14px;left:14px;font-size:.58rem;font-weight:600;color:rgba(0,200,255,.7);letter-spacing:.1em;font-family:monospace;line-height:1.8;}
+.demo-corner{position:absolute;width:20px;height:20px;}
+.demo-corner.tl{top:10px;left:10px;border-top:2px solid rgba(0,200,255,.5);border-left:2px solid rgba(0,200,255,.5);}
+.demo-corner.tr{top:10px;right:10px;border-top:2px solid rgba(0,200,255,.5);border-right:2px solid rgba(0,200,255,.5);}
+.demo-corner.bl{bottom:10px;left:10px;border-bottom:2px solid rgba(0,200,255,.5);border-left:2px solid rgba(0,200,255,.5);}
+.demo-corner.br{bottom:10px;right:10px;border-bottom:2px solid rgba(0,200,255,.5);border-right:2px solid rgba(0,200,255,.5);}
+.demo-target{position:absolute;width:56px;height:56px;top:40%;left:55%;transform:translate(-50%,-50%);}
+.demo-target::before,.demo-target::after{content:'';position:absolute;border:1px solid rgba(0,255,100,.6);inset:0;border-radius:4px;animation:targetPulse 2s ease-in-out infinite;}
+.demo-target::after{animation-delay:1s;inset:-7px;}
+@keyframes targetPulse{0%,100%{opacity:.6;transform:scale(1);}50%{opacity:1;transform:scale(1.05);}}
+.demo-badge{position:absolute;top:54%;left:57%;background:rgba(0,255,100,.15);border:1px solid rgba(0,255,100,.4);color:rgba(0,255,100,.9);font-size:.52rem;font-weight:700;font-family:monospace;padding:3px 8px;border-radius:4px;letter-spacing:.06em;white-space:nowrap;}
+.demo-rec{position:absolute;top:14px;right:14px;display:flex;align-items:center;gap:5px;font-size:.58rem;font-weight:700;color:rgba(255,60,60,.9);font-family:monospace;}
+.demo-rec-dot{width:6px;height:6px;background:rgba(255,60,60,.9);border-radius:50%;animation:ledBlink 1.5s ease-in-out infinite;}
+@keyframes ledBlink{0%,100%{opacity:1;}50%{opacity:.25;}}
+.demo-buttons{display:flex;flex-direction:column;gap:10px;margin-top:28px;}
+.demo-btn{background:var(--dark3);border:1px solid var(--gray);border-radius:12px;padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .3s;text-align:left;}
+.demo-btn.active,.demo-btn:hover{background:rgba(245,196,0,.06);border-color:rgba(245,196,0,.25);}
+.demo-btn-icon{width:36px;height:36px;background:rgba(245,196,0,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.demo-btn-icon svg{color:var(--gold);}
+.demo-btn h4{font-size:.88rem;font-weight:600;margin-bottom:3px;}
+.demo-btn p{font-size:.72rem;color:var(--light);}
+
+/* ── CLIENTS ── */
+.clients-section{background:var(--black);padding:110px 0;}
+.clients-header{text-align:center;margin-bottom:56px;}
+.clients-logos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:920px;margin:0 auto;}
+.client-logo-card{background:#fff;border:1px solid #ddd;border-radius:16px;padding:18px 14px 14px;display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;transition:border-color .3s,background .3s,transform .2s;min-height:120px;}
+.client-logo-card:hover{border-color:rgba(184,154,0,.4);background:#f0f0f0;transform:translateY(-3px);}
+.client-logo-img-wrap{width:100%;background:#fff;border-radius:8px;padding:10px 8px;display:flex;align-items:center;justify-content:center;min-height:64px;flex:1;}
+.client-logo-img-wrap img{max-width:100%;max-height:48px;width:auto;height:auto;object-fit:contain;display:block;}
+.client-logo-placeholder{width:100%;background:var(--dark3);border:1.5px dashed var(--gray);border-radius:8px;padding:12px 8px;display:flex;align-items:center;justify-content:center;min-height:64px;flex:1;}
+.client-logo-placeholder svg{color:var(--mid);}
+.client-logo-name{font-size:.7rem;font-weight:700;color:#777;letter-spacing:.06em;text-transform:uppercase;margin-top:9px;}
+
+/* ── REVIEWS ── */
+.reviews-section{background:var(--black);padding:100px 0;overflow:hidden;}
+.reviews-header{text-align:center;margin-bottom:44px;}
+.overall-rating-bar{
+  display:flex;align-items:center;gap:18px;
+  background:rgba(245,196,0,.05);border:1px solid rgba(245,196,0,.15);
+  border-radius:18px;padding:18px 24px;max-width:480px;margin:0 auto 44px;flex-wrap:wrap;
+  /* Clicável */
+  cursor:pointer;transition:border-color .2s,background .2s;text-decoration:none;
+}
+.overall-rating-bar:hover{border-color:rgba(245,196,0,.35);background:rgba(245,196,0,.08);}
+.or-num{font-size:2.8rem;font-weight:800;color:var(--gold);line-height:1;letter-spacing:-.04em;}
+.or-stars{font-size:1.1rem;color:var(--gold);}
+.or-desc{font-size:.78rem;color:var(--light);margin-top:2px;}
+.or-google{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--light);}
+.or-arrow{font-size:.85rem;color:var(--gold);margin-left:4px;}
+.reviews-track-wrap{position:relative;overflow:hidden;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);}
+.reviews-track{display:flex;gap:16px;width:max-content;padding:0 8px;animation:reviewsScroll 42s linear infinite;}
+.reviews-track:hover{animation-play-state:paused;}
+@keyframes reviewsScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.rev-card{background:var(--dark3);border:1px solid var(--gray);border-radius:18px;padding:24px;width:300px;flex-shrink:0;position:relative;overflow:hidden;transition:border-color .3s;}
+.rev-card:hover{border-color:rgba(245,196,0,.2);}
+.rev-quote{position:absolute;top:14px;right:18px;font-size:3rem;line-height:1;color:rgba(245,196,0,.06);font-family:Georgia,serif;font-weight:700;}
+.rev-stars{display:flex;gap:2px;margin-bottom:12px;}
+.rev-stars span{color:var(--gold);font-size:.85rem;}
+.rev-text{font-size:.85rem;line-height:1.7;color:var(--light);margin-bottom:18px;}
+.rev-author{display:flex;align-items:center;gap:10px;}
+.rev-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a800);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;color:#000;flex-shrink:0;}
+.rev-name{font-size:.8rem;font-weight:600;}
+.rev-role{font-size:.66rem;color:var(--mid);margin-top:1px;}
+
+/* ── GOOGLE FLOAT ── */
+.google-float{
+  position:fixed;bottom:24px;left:24px;z-index:8000;
+  background:#fff;border-radius:16px;padding:13px 16px;
+  display:flex;align-items:center;gap:13px;
+  box-shadow:0 6px 28px rgba(0,0,0,.45);
+  cursor:pointer;text-decoration:none;
+  transition:transform .2s,box-shadow .2s;min-width:230px;
+}
+.google-float:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,0,0,.55);}
+.g-logo{width:30px;height:30px;flex-shrink:0;}
+.g-info{line-height:1.3;flex:1;}
+.g-title{font-size:.7rem;color:#333;font-weight:700;}
+.g-stars{display:flex;gap:1px;margin:3px 0;}
+.g-stars span{color:#FBBC04;font-size:.9rem;}
+.g-count{font-size:.62rem;color:#888;}
+.g-rating-num{font-size:1.4rem;font-weight:900;color:#1a1a1a;letter-spacing:-.03em;}
+/* Mobile: icon-only */
+@media(max-width:600px){
+  .google-float{min-width:unset;padding:10px;border-radius:50%;width:50px;height:50px;justify-content:center;}
+  .g-info,.g-rating-num{display:none;}
+  .g-logo{width:26px;height:26px;}
+}
+
+/* ── CTA ── */
+.cta-section{background:var(--black);padding:140px 0;text-align:center;position:relative;overflow:hidden;}
+.cta-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(245,196,0,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.cta-section h2{font-size:clamp(2.6rem,5.5vw,5rem);font-weight:800;letter-spacing:-.04em;line-height:1.06;max-width:780px;margin:0 auto 24px;}
+.cta-section h2 em{font-style:normal;color:var(--gold);}
+.cta-section p{font-size:1rem;color:var(--light);font-weight:300;margin-bottom:40px;max-width:420px;margin-left:auto;margin-right:auto;}
+
+/* ── CONTACT ── */
+.contact-section{background:#f5f5f7;padding:110px 0;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.contact-h3{font-size:1.7rem;font-weight:800;letter-spacing:-.03em;margin-bottom:22px;color:#0d0d0d;}
+.contact-line{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
+.contact-icon{width:42px;height:42px;background:rgba(184,154,0,.12);border:1px solid rgba(184,154,0,.25);border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-icon svg{color:#b89a00;}
+.contact-line-text strong{display:block;font-size:.83rem;font-weight:600;margin-bottom:2px;color:#1a1a1a;}
+.contact-line-text span{font-size:.83rem;color:#555;}
+.form{display:flex;flex-direction:column;gap:12px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#777;display:block;margin-bottom:5px;}
+.form input,.form textarea,.form select{
+  width:100%;background:#fff;
+  border:1px solid #ccc;border-radius:10px;
+  padding:12px 14px;color:#1a1a1a;
+  font-family:var(--font);font-size:.87rem;outline:none;
+  transition:border-color .2s,background .2s;
+}
+.form input:focus,.form textarea:focus,.form select:focus{border-color:rgba(184,154,0,.6);background:#fffdf0;}
+.form select option{background:#fff;color:#1a1a1a;}
+.form textarea{min-height:96px;resize:vertical;}
+.form-submit{
+  background:var(--gold);color:#000;border:none;padding:14px;
+  border-radius:10px;font-family:var(--font);font-size:.93rem;font-weight:700;
+  cursor:pointer;transition:all .2s;
+}
+.form-submit:hover{background:var(--gold2);transform:translateY(-1px);}
+
+/* ── WA FLOAT ── */
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:8000;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s,box-shadow .2s;}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(37,211,102,.5);}
+
+/* ── FOOTER ── */
+footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48px 28px;}
+.footer-inner{max-width:1100px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:44px;}
+.footer-brand-desc{font-size:.8rem;color:var(--mid);line-height:1.7;margin-top:12px;max-width:280px;}
+.footer-col-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:14px;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:9px;}
+.footer-col ul li a{text-decoration:none;color:var(--mid);font-size:.8rem;transition:color .2s;}
+.footer-col ul li a:hover{color:var(--white);}
+.footer-bottom{border-top:1px solid var(--gray);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.footer-bottom p{font-size:.7rem;color:var(--mid);}
+
+/* ── LOADER ── */
+.page-loader{position:fixed;inset:0;background:var(--black);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.loader-logo{font-size:2rem;font-weight:900;letter-spacing:-.04em;color:var(--white);}
+.loader-logo span{color:var(--gold);}
+.loader-bar{width:110px;height:1px;background:var(--gray);overflow:hidden;}
+.loader-progress{height:100%;background:var(--gold);animation:loadProgress 1.2s ease-in-out forwards;}
+@keyframes loadProgress{from{width:0;}to{width:100%;}}
+
+/* ── MOBILE MENU ── */
+.mobile-menu{position:fixed;inset:0;background:rgba(13,13,13,.97);backdrop-filter:blur(20px);z-index:8999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transform:translateY(-100%);transition:transform .4s cubic-bezier(.23,1,.32,1);}
+.mobile-menu.open{transform:translateY(0);}
+.mobile-menu a{text-decoration:none;color:var(--white);font-size:1.7rem;font-weight:700;letter-spacing:-.03em;transition:color .2s;}
+.mobile-menu a:hover{color:var(--gold);}
+
+/* ══════════════════════════════════════════════
+   ADMIN PANEL CSS
+   ══════════════════════════════════════════════ */
+.adm-overlay{position:fixed;inset:0;z-index:199000;background:rgba(0,0,0,.94);backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s cubic-bezier(.23,1,.32,1);}
+.adm-overlay.open{opacity:1;pointer-events:all;}
+.adm-login-card{background:var(--dark2);border:1px solid var(--gray);border-radius:22px;padding:44px 38px;width:100%;max-width:370px;text-align:center;transform:scale(.95);transition:transform .35s cubic-bezier(.23,1,.32,1);}
+.adm-overlay.open .adm-login-card{transform:scale(1);}
+.adm-login-logo{font-size:1.3rem;font-weight:900;color:var(--white);margin-bottom:5px;}
+.adm-login-logo span{color:var(--gold);}
+.adm-login-sub{font-size:.78rem;color:var(--mid);margin-bottom:28px;letter-spacing:.04em;}
+.adm-field{margin-bottom:12px;text-align:left;}
+.adm-field label{display:block;font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);margin-bottom:5px;}
+.adm-field input{width:100%;background:var(--dark3);border:1px solid var(--gray);border-radius:9px;padding:11px 13px;color:var(--white);font-family:var(--font);font-size:.88rem;outline:none;transition:border-color .2s;}
+.adm-field input:focus{border-color:rgba(245,196,0,.5);}
+.adm-login-btn{width:100%;background:var(--gold);color:#000;border:none;padding:12px;border-radius:9px;font-family:var(--font);font-size:.92rem;font-weight:700;cursor:pointer;transition:background .2s;margin-top:5px;}
+.adm-login-btn:hover{background:var(--gold2);}
+.adm-login-err{font-size:.78rem;color:#ff453a;min-height:18px;margin-top:8px;}
+.adm-close-login{position:absolute;top:22px;right:22px;background:var(--dark3);border:1px solid var(--gray);color:var(--white);width:34px;height:34px;border-radius:50%;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.adm-close-login:hover{background:var(--gray);}
+.adm-drawer{position:fixed;top:0;right:0;bottom:0;width:min(820px,100vw);z-index:200000;background:var(--dark2);border-left:1px solid var(--gray);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .4s cubic-bezier(.23,1,.32,1);box-shadow:-20px 0 70px rgba(0,0,0,.6);}
+.adm-drawer.open{transform:translateX(0);}
+.adm-drawer-bg{position:fixed;inset:0;z-index:199999;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s;}
+.adm-drawer-bg.open{opacity:1;pointer-events:all;}
+.adm-top{padding:0 22px;height:54px;display:flex;align-items:center;justify-content:space-between;background:var(--dark2);border-bottom:1px solid var(--gray);flex-shrink:0;}
+.adm-top-logo{font-size:.9rem;font-weight:800;letter-spacing:-.02em;}
+.adm-top-logo span{color:var(--gold);}
+.adm-top-right{display:flex;align-items:center;gap:8px;}
+.adm-btn-sm{background:var(--dark3);border:1px solid var(--gray);color:var(--light);padding:5px 12px;border-radius:7px;font-family:var(--font);font-size:.73rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:4px;text-decoration:none;}
+.adm-btn-sm:hover{background:var(--gray);color:var(--white);}
+.adm-btn-sm.danger{border-color:rgba(255,69,58,.25);color:#ff6b6b;}
+.adm-btn-sm.danger:hover{background:rgba(255,69,58,.12);}
+.adm-close-drawer{background:var(--dark3);border:1px solid var(--gray);color:var(--white);width:32px;height:32px;border-radius:50%;font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0;}
+.adm-close-drawer:hover{background:var(--gray);}
+.adm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray);border-bottom:1px solid var(--gray);flex-shrink:0;}
+.adm-stat{background:var(--dark2);padding:14px 18px;text-align:center;}
+.adm-stat-num{font-size:1.5rem;font-weight:800;color:var(--gold);line-height:1;letter-spacing:-.03em;}
+.adm-stat-num.red{color:#ff453a;}
+.adm-stat-lbl{font-size:.62rem;color:var(--mid);margin-top:3px;letter-spacing:.06em;text-transform:uppercase;}
+.adm-filters{display:flex;gap:7px;padding:12px 18px;border-bottom:1px solid var(--gray);flex-shrink:0;flex-wrap:wrap;align-items:center;}
+.adm-filter{background:var(--dark3);border:1px solid var(--gray);color:var(--mid);padding:5px 12px;border-radius:7px;font-family:var(--font);font-size:.73rem;cursor:pointer;transition:all .2s;}
+.adm-filter.active,.adm-filter:hover{background:rgba(245,196,0,.1);border-color:rgba(245,196,0,.3);color:var(--gold);}
+.adm-search{flex:1;min-width:130px;background:var(--dark3);border:1px solid var(--gray);border-radius:7px;padding:5px 11px;color:var(--white);font-family:var(--font);font-size:.78rem;outline:none;transition:border-color .2s;}
+.adm-search:focus{border-color:rgba(245,196,0,.35);}
+.adm-list{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px;}
+.adm-list::-webkit-scrollbar{width:3px;}
+.adm-list::-webkit-scrollbar-thumb{background:var(--gray);border-radius:3px;}
+.adm-card{background:var(--dark3);border:1px solid var(--gray);border-radius:12px;padding:16px 18px;transition:border-color .2s,background .2s;}
+.adm-card:hover{border-color:rgba(245,196,0,.2);}
+.adm-card.unread{border-left:3px solid var(--gold);}
+.adm-card-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px;}
+.adm-card-name{font-size:.9rem;font-weight:700;}
+.adm-card-badge{background:rgba(245,196,0,.1);border:1px solid rgba(245,196,0,.2);color:var(--gold);font-size:.62rem;font-weight:700;padding:2px 9px;border-radius:50px;white-space:nowrap;}
+.adm-unread-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+.adm-card-date{font-size:.65rem;color:var(--mid);margin-left:auto;}
+.adm-card-phone{font-size:.8rem;color:var(--mid);margin-bottom:5px;}
+.adm-card-msg{font-size:.8rem;color:var(--light);line-height:1.6;white-space:pre-wrap;padding:9px 11px;background:rgba(255,255,255,.03);border-radius:7px;margin-bottom:10px;}
+.adm-card-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.adm-wa-btn{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);color:#25D366;padding:5px 12px;border-radius:7px;font-family:var(--font);font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+.adm-wa-btn:hover{background:rgba(37,211,102,.2);}
+.adm-read-btn{background:var(--dark3);border:1px solid var(--gray);color:var(--mid);padding:5px 12px;border-radius:7px;font-family:var(--font);font-size:.72rem;cursor:pointer;transition:all .2s;}
+.adm-read-btn:hover{border-color:rgba(245,196,0,.3);color:var(--gold);}
+.adm-del-btn{background:rgba(255,69,58,.06);border:1px solid rgba(255,69,58,.18);color:#ff6b6b;padding:5px 12px;border-radius:7px;font-family:var(--font);font-size:.72rem;cursor:pointer;transition:all .2s;}
+.adm-del-btn:hover{background:rgba(255,69,58,.15);}
+.adm-empty{text-align:center;padding:52px 18px;color:var(--mid);}
+.adm-empty p{font-size:.83rem;}
+.adm-toast{position:fixed;bottom:26px;right:26px;z-index:210000;background:var(--dark2);border:1px solid var(--gray);border-radius:11px;padding:11px 18px;font-size:.83rem;font-weight:500;min-width:190px;text-align:center;transform:translateY(70px);opacity:0;transition:transform .3s cubic-bezier(.23,1,.32,1),opacity .3s;pointer-events:none;}
+.adm-toast.show{transform:translateY(0);opacity:1;}
+.adm-toast.ok{border-color:rgba(48,209,88,.3);color:#32d74b;}
+.adm-toast.err{border-color:rgba(255,69,58,.3);color:#ff453a;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .nav-links{display:none;}.nav-ham{display:flex;}
+  .hero-cam-wrap{width:100%;opacity:.3 !important;}
+  .hero-cam-wrap::before{background:linear-gradient(to bottom,rgba(13,13,13,.75) 0%,rgba(13,13,13,.35) 60%,rgba(13,13,13,.9) 100%);}
+  .hero-label,.hero h1,.hero-sub{text-align:center;align-self:center;padding-left:20px;}
+  .hero h1{max-width:100%;}
+  .hero-actions{justify-content:center;padding:0 20px;}
+  .features-grid{grid-template-columns:1fr 1fr;}
+  .services-grid-6{grid-template-columns:repeat(2,1fr);}
+  .demo-wrap{grid-template-columns:1fr;gap:36px;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .clients-logos-grid{grid-template-columns:repeat(3,1fr);}
+  .contact-grid{grid-template-columns:1fr;gap:44px;}
+  .footer-top{grid-template-columns:1fr 1fr;}
+  .svc-modal-gallery{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:600px){
+  .container{padding:0 20px;}.section{padding:80px 0;}
+  .features-grid{grid-template-columns:1fr;}
+  .services-grid-6{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .clients-logos-grid{grid-template-columns:repeat(2,1fr);}
+  .form-row{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .svc-modal-gallery{grid-template-columns:1fr 1fr;}
+  .overall-rating-bar{flex-direction:column;align-items:flex-start;gap:8px;}
+  .or-google{margin-left:0;}
+}
+
+/* GSAP fade-in utility */
+.gsap-fade{opacity:0;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo"><span>L.S</span> NOW</a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+   <li><a href="#servicos">Serviços</a></li>
+    <!-- <li><a href="#demo">Tecnologia</a></li>-->
+    <li><a href="#clientes">Clientes</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <a href="#contato" class="nav-cta">Orçamento grátis</a>
+    <button class="nav-ham" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sobre" onclick="toggleMenu()">Sobre</a>
+  <a href="#servicos" onclick="toggleMenu()">Serviços</a>
+  <a href="#demo" onclick="toggleMenu()">Tecnologia</a>
+  <a href="#clientes" onclick="toggleMenu()">Clientes</a>
+  <a href="#contato" onclick="toggleMenu()">Contato</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="inicio">
+  <div class="hero-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <!-- Van photo — z=1 -->
+  <div class="hero-cam-wrap" id="heroCam">
+    <img class="hero-van-img" src="van.jpeg" alt="Veículo L.S Now — Soluções em Segurança Eletrônica">
+    <div class="hero-van-accent"></div>
+  </div>
+
+  <!-- Text — z=2, centralizado -->
+  <div class="hero-label" id="heroLabel">Segurança Eletrônica Profissional</div>
+  <h1 id="heroTitle">
+  <span class="line1">Segurança Inteligente</span>
+  <span class="line2">para seu patrimônio</span>
+</h1>
+  <p class="hero-sub" id="heroSub">Câmeras, alarmes, controle de acesso e automação com tecnologia de ponta. Protegendo o que importa com inovação e confiabilidade.</p>
+  <div class="hero-actions" id="heroActions">
+    <a href="#contato" class="btn-gold">
+      Solicitar Orçamento
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="#servicos" class="btn-ghost">Ver Serviços</a>
+  </div>
+
+  <!-- Scroll hint — bottom, sem colidir com buttons -->
+  <div class="hero-scroll-hint" id="scrollHint">
+    <div class="scroll-line"></div>
+    <span class="scroll-txt">Scroll</span>
+  </div>
+</section>
+
+<!-- ══ STORY ══ -->
+<section class="story-section" id="sobre">
+  <div class="story-panels" id="storyPanels">
+    <div class="story-sticky" id="storySticky">
+      <div class="story-panel-text" id="story1">
+        <div class="tag" id="storyTag">Inovação</div>
+        <h2 id="storyHeadline">Veja tudo.<br><span style="color:var(--gold)">Proteja sempre.</span></h2>
+        <p id="storyDesc">Câmeras 4K Ultra HD com IA que captam cada detalhe, dia e noite, com alertas em tempo real.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══ -->
+<section class="section services-section" id="servicos">
+  <div class="container">
+    <div class="services-header gsap-fade">
+      <div class="tag">Nossos Serviços</div>
+      <h2 class="headline" style="text-align:center;">Soluções completas<br><em>em segurança</em>.</h2>
+      <p class="subtext" style="text-align:center;margin:12px auto 0;max-width:480px;">Clique em qualquer serviço para ver projetos e instalações realizadas.</p>
+    </div>
+    <div class="services-grid-6">
+      <div class="svc-card gsap-fade" onclick="openSvc('cameras')">
+        <div class="svc-num">01</div>
+        <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="svc-title">Câmera de Segurança</div></div>
+        <div class="svc-body"><p class="svc-desc">Câmeras internas e externas com acesso remoto, visão noturna e gravação 24h em alta definição.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+      </div>
+      <div class="svc-card gsap-fade" onclick="openSvc('cerca')">
+        <div class="svc-num">02</div>
+        <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2v20M11 2v20"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="18" x2="20" y2="18"/></svg></div><div class="svc-title">Cerca Elétrica</div></div>
+        <div class="svc-body"><p class="svc-desc">Proteção perimetral de alta performance para residências, condomínios e empresas.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+      </div>
+      <div class="svc-card gsap-fade" onclick="openSvc('video')">
+        <div class="svc-num">03</div>
+        <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.899L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div><div class="svc-title">Vídeo Porteiro</div></div>
+        <div class="svc-body"><p class="svc-desc">Controle de acesso com vídeo porteiro, abertura remota pelo celular e registro de visitantes.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+      </div>
+      <div class="svc-card gsap-fade" onclick="openSvc('alarme')">
+        <div class="svc-num">04</div>
+        <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div><div class="svc-title">Alarme</div></div>
+        <div class="svc-body"><p class="svc-desc">Sistemas monitorados 24h com sensores de movimento, abertura e fumaça. Sirene de alta potência.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+      </div>
+      <div class="svc-card gsap-fade" onclick="openSvc('portao')">
+        <div class="svc-num">05</div>
+        <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h6v8h-6"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="svc-title">Automatização de Portão e Travas Elétricas</div></div>
+        <div class="svc-body"><p class="svc-desc">Motores Garen para portões deslizantes e basculantes, travas elétricas e controle remoto completo.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+      </div>
+      <div class="svc-card gsap-fade" onclick="openSvc('acesso')">
+        <div class="svc-num">06</div>
+        <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="svc-title">Controle de Acesso / Fechadura</div></div>
+        <div class="svc-body"><p class="svc-desc">Fechaduras digitais, biometria, reconhecimento facial e cartões RFID para acesso inteligente.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE MODAL -->
+<div class="svc-modal-overlay" id="svcModalOverlay" onclick="closeSvcOutside(event)">
+  <div class="svc-modal">
+    <div class="svc-modal-header">
+      <div class="svc-modal-title" id="svcModalTitle">—</div>
+      <button class="svc-modal-close" onclick="closeSvc()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="svc-modal-body">
+      <p class="svc-modal-desc" id="svcModalDesc"></p>
+      <div class="svc-modal-gallery" id="svcModalGallery"></div>
+      <div class="svc-modal-cta">
+        <a href="#contato" class="btn-gold" onclick="closeSvc()" style="font-size:.83rem;padding:11px 22px;">
+          Solicitar Orçamento
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STATS ══ -->
+<div class="stats-section gsap-fade">
+  <div style="max-width:1100px;margin:0 auto;padding:0 48px;">
+    <div class="stats-grid">
+      <div class="stat-cell"><div class="stat-num"><span class="count" data-target="500">0</span><span class="stat-unit">+</span></div><div class="stat-label">Instalações</div></div>
+      <div class="stat-cell"><div class="stat-num"><span class="count" data-target="10">0</span><span class="stat-unit">+</span></div><div class="stat-label">Anos de experiência</div></div>
+      <div class="stat-cell"><div class="stat-num"><span class="count" data-target="5">0</span><span class="stat-unit">.0</span></div><div class="stat-label">Nota Google</div></div>
+      <div class="stat-cell"><div class="stat-num"><span class="count" data-target="100">0</span><span class="stat-unit">%</span></div><div class="stat-label">Satisfação</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DEMO 
+<section class="demo-section" id="demo">
+  <div class="container">
+    <div class="demo-wrap">
+      <div class="gsap-fade">
+        <div class="tag">Tecnologia</div>
+        <h2 class="headline">Veja como<br><em>funciona</em>.</h2>
+        <p class="subtext">Monitoramento inteligente com detecção de movimento, visão noturna e transmissão ao vivo para o seu celular.</p>
+        <div class="demo-buttons">
+          <div class="demo-btn active" onclick="setDemo(this,'night')">
+            <div class="demo-btn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+            <div><h4>Visão Noturna</h4><p>Imagem clara mesmo no escuro total</p></div>
+          </div>
+          <div class="demo-btn" onclick="setDemo(this,'detect')">
+            <div class="demo-btn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+            <div><h4>Detecção IA</h4><p>Identifica pessoas e veículos automaticamente</p></div>
+          </div>
+          <div class="demo-btn" onclick="setDemo(this,'remote')">
+            <div class="demo-btn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+            <div><h4>Acesso Remoto</h4><p>Ao vivo no celular, de qualquer lugar</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-screen gsap-fade">
+        <div class="demo-screen-inner">
+          <div class="demo-cam-view" id="demoView">
+            <div class="demo-scan-line"></div>
+            <div class="demo-grid-overlay"></div>
+            <div class="demo-hud" id="demoHud">CAM 01 — ENTRADA<br>RES: 3840×2160<br>FPS: 30<br>STATUS: LIVE</div>
+            <div class="demo-corner tl"></div><div class="demo-corner tr"></div>
+            <div class="demo-corner bl"></div><div class="demo-corner br"></div>
+            <div class="demo-target"></div>
+            <div class="demo-badge" id="demoBadge">PESSOA DETECTADA</div>
+            <div class="demo-rec"><div class="demo-rec-dot"></div>REC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> == -->
+
+<!-- ══ CLIENTS ══ -->
+<section class="clients-section" id="clientes" style="background:#f5f5f7;padding:110px 0;">
+  <div class="container">
+    <div class="clients-header gsap-fade">
+      <div class="tag" style="color:#b89a00;">Nossos Clientes</div>
+      <h2 class="headline" style="text-align:center;color:#0d0d0d;">Empresas que <span style="color:#b89a00;font-style:normal;">confiam</span><br>na L.S Now.</h2>
+      <p class="subtext" style="text-align:center;margin:12px auto 0;max-width:420px;color:#555;">Atendemos condomínios, residências, empresas e estabelecimentos de toda a região.</p>
+    </div>
+    <div class="clients-logos-grid">
+      <div class="client-logo-card gsap-fade">
+        <div class="client-logo-img-wrap">
+          <img src="img/Logo_Cacau_Show-removebg-preview.avif" alt="Cacau Show" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+        </div>
+        <div class="client-logo-name">Cacau Show</div>
+      </div>
+       <div class="client-logo-card gsap-fade">
+        <div class="client-logo-img-wrap">
+          <img src="img/logo.avif" alt="Floractive" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+        </div>
+        <div class="client-logo-name">Floractive</div>
+      </div>
+       <div class="client-logo-card gsap-fade">
+        <div class="client-logo-img-wrap">
+          <img src="img/MARDEK-PISOS-NAUTICOS-removebg-preview.avif" alt="Mardek Pisos Nauticos" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+        </div>
+        <div class="client-logo-name">Mardek Pisos Nauticos</div>
+      </div>
+      <div class="client-logo-card gsap-fade">
+        <div class="client-logo-img-wrap">
+          <img src="img/LUBIAN-PLASTICOS-removebg-preview.avif" alt="Lubian" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+        </div>
+        <div class="client-logo-name">lubian</div>
+      </div>
+      <div class="client-logo-card gsap-fade">
+        <div class="client-logo-img-wrap">
+          <img src="img/image-removebg-preview (3).png" alt="Cacau Show" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+        </div>
+        <div class="client-logo-name">Seu Dentista</div>
+      </div>
+      <div class="client-logo-card gsap-fade">
+        <div class="client-logo-img-wrap">
+          <img src="img/images__2_-removebg-preview.avif" alt="Phyto Green" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+        </div>
+        <div class="client-logo-name">Phyto Green</div>
+      </div>
+      <div class="client-logo-card gsap-fade">
+        <div class="client-logo-img-wrap">
+          <img src="img/339654111_772318961074927_2079262801274745262_n (1).jpg" alt="Cacau Show" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+        </div>
+        <div class="client-logo-name">óleo novo</div>
+      </div>
+      <div class="client-logo-card gsap-fade">
+        <div class="client-logo-img-wrap">
+          <img src="img/401922176_713785567281562_1065588810008170559_n.jpg" alt="Cacau Show" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+        </div>
+        <div class="client-logo-name">tok iluminar</div>
+      </div>
+  </div>
+</section>
+
+<!-- ══ REVIEWS CAROUSEL ══ -->
+<section class="reviews-section">
+  <div class="reviews-header">
+    <div class="tag" style="display:block;text-align:center;">Avaliações</div>
+    <h2 class="headline" style="text-align:center;margin-top:6px;">O que dizem nossos<br><em>clientes</em>.</h2>
+  </div>
+  <div style="max-width:1100px;margin:0 auto;padding:0 48px;">
+    <!-- Stars badge — clicável, leva para Google Reviews -->
+    <a class="overall-rating-bar gsap-fade" href="https://share.google/4XBpzENphyctSa67k" target="_blank" rel="noopener">
+      <div class="or-num">5.0</div>
+      <div>
+        <div class="or-stars">★★★★★</div>
+        <div class="or-desc">685 estrelas · 137 avaliações no Google</div>
+      </div>
+      <div class="or-google">
+        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-3.59-14.43-8.83l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Ver no Google
+        <span class="or-arrow">→</span>
+      </div>
+    </a>
+  </div>
+  <div class="reviews-track-wrap">
+    <div class="reviews-track">
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Serviço impecável! Instalaram as câmeras com agilidade. Sistema funcionando perfeitamente, super recomendo!</p><div class="rev-author"><div class="rev-avatar">M</div><div><div class="rev-name">Marcos Oliveira</div><div class="rev-role">Empresário · há 2 semanas</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Cerca elétrica instalada com qualidade. Preço justo, equipe educada e pontual. Muito satisfeita!</p><div class="rev-author"><div class="rev-avatar">A</div><div><div class="rev-name">Ana Paula Silva</div><div class="rev-role">Moradora · há 1 mês</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Automatizei o portão e instalei câmeras. Trabalho perfeito, dentro do prazo. Agora vejo tudo pelo celular!</p><div class="rev-author"><div class="rev-avatar">R</div><div><div class="rev-name">Roberto Fernandes</div><div class="rev-role">Proprietário · há 1 mês</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Instalaram o alarme e o vídeo porteiro no mesmo dia. Nota 10! Equipe competente, suporte pós-venda fantástico.</p><div class="rev-author"><div class="rev-avatar">C</div><div><div class="rev-name">Carla Mendes</div><div class="rev-role">Moradora · há 2 meses</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Câmeras Intelbras instaladas com maestria. Qualidade premium, instalação limpa. Vale cada centavo!</p><div class="rev-author"><div class="rev-avatar">J</div><div><div class="rev-name">João Costa</div><div class="rev-role">Empresário · há 3 meses</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Contratei para o condomínio e superou expectativas. Câmeras em todos os pontos, qualidade extraordinária!</p><div class="rev-author"><div class="rev-avatar">L</div><div><div class="rev-name">Luciana Ramos</div><div class="rev-role">Síndica · há 3 meses</div></div></div></div>
+      <!-- duplicate for seamless loop -->
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Serviço impecável! Instalaram as câmeras com agilidade. Sistema funcionando perfeitamente, super recomendo!</p><div class="rev-author"><div class="rev-avatar">M</div><div><div class="rev-name">Marcos Oliveira</div><div class="rev-role">Empresário · há 2 semanas</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Cerca elétrica instalada com qualidade. Preço justo, equipe educada e pontual. Muito satisfeita!</p><div class="rev-author"><div class="rev-avatar">A</div><div><div class="rev-name">Ana Paula Silva</div><div class="rev-role">Moradora · há 1 mês</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Automatizei o portão e instalei câmeras. Trabalho perfeito, dentro do prazo. Agora vejo tudo pelo celular!</p><div class="rev-author"><div class="rev-avatar">R</div><div><div class="rev-name">Roberto Fernandes</div><div class="rev-role">Proprietário · há 1 mês</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Instalaram o alarme e o vídeo porteiro no mesmo dia. Nota 10! Equipe competente, suporte pós-venda fantástico.</p><div class="rev-author"><div class="rev-avatar">C</div><div><div class="rev-name">Carla Mendes</div><div class="rev-role">Moradora · há 2 meses</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Câmeras Intelbras instaladas com maestria. Qualidade premium, instalação limpa. Vale cada centavo!</p><div class="rev-author"><div class="rev-avatar">J</div><div><div class="rev-name">João Costa</div><div class="rev-role">Empresário · há 3 meses</div></div></div></div>
+      <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Contratei para o condomínio e superou expectativas. Câmeras em todos os pontos, qualidade extraordinária!</p><div class="rev-author"><div class="rev-avatar">L</div><div><div class="rev-name">Luciana Ramos</div><div class="rev-role">Síndica · há 3 meses</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES (Por que nos escolher) ══ -->
+<section class="section gsap-fade" id="beneficios" style="background:#f5f5f7;">
+  <div class="container">
+    <div class="tag" style="color:#b89a00;">Por que nos escolher</div>
+    <h2 class="headline" style="color:#0d0d0d;">Tecnologia que <span style="color:#b89a00;font-style:normal;">funciona</span>.</h2>
+    <p class="subtext" style="color:#444;">Equipamentos de ponta, instalação profissional e suporte contínuo para sua total tranquilidade.</p>
+    <div class="features-grid" style="background:#ddd;border-color:#ddd;">
+      <div class="feature-cell" style="background:#fff;">
+        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg></div>
+        <h3 style="color:#0d0d0d;">Acesso Remoto</h3><p style="color:#555;">Monitore sua propriedade de qualquer lugar do mundo, em tempo real, pelo celular ou computador.</p>
+      </div>
+      <div class="feature-cell" style="background:#fff;">
+        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        <h3 style="color:#0d0d0d;">Alta Definição 4K</h3><p style="color:#555;">Imagens Ultra HD com zoom digital avançado para identificação clara em qualquer condição.</p>
+      </div>
+      <div class="feature-cell" style="background:#fff;">
+        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+        <h3 style="color:#0d0d0d;">Visão Noturna</h3><p style="color:#555;">Tecnologia infravermelha que garante visibilidade total mesmo no escuro absoluto.</p>
+      </div>
+      <div class="feature-cell" style="background:#fff;">
+        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/></svg></div>
+        <h3 style="color:#0d0d0d;">Inteligência Artificial</h3><p style="color:#555;">Detecção automática de pessoas e veículos com alertas instantâneos no seu celular.</p>
+      </div>
+      <div class="feature-cell" style="background:#fff;">
+        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h3 style="color:#0d0d0d;">Backup em Nuvem</h3><p style="color:#555;">Gravações seguras com acesso a histórico de 30 dias, sem risco de perda de dados.</p>
+      </div>
+      <div class="feature-cell" style="background:#fff;">
+        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3 style="color:#0d0d0d;">Suporte &amp; Garantia</h3><p style="color:#555;">Instalação certificada, assistência técnica especializada e garantia em todos os serviços.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="container" style="position:relative;">
+    <div class="tag">Comece hoje</div>
+    <h2>Proteja o que<br><em>mais importa</em>.</h2>
+    <p>Orçamento 100% gratuito. Atendemos residências, empresas e condomínios em toda a região.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="#contato" class="btn-gold" style="font-size:1rem;padding:15px 34px;">Solicitar Orçamento Gratuito</a>
+      <a href="https://wa.me/5511957696353" target="_blank" class="btn-ghost" style="font-size:1rem;padding:15px 34px;display:inline-flex;align-items:center;gap:8px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section class="contact-section" id="contato">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="gsap-fade">
+        <div class="tag" style="color:#b89a00;">Fale Conosco</div>
+        <h3 class="contact-h3">Estamos prontos<br>para te atender.</h3>
+        <div class="contact-line"><div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.77a16 16 0 006.29 6.29l1.14-1.16a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div class="contact-line-text"><strong>WhatsApp</strong><span>(11) 95769-6353</span></div></div>
+        <div class="contact-line"><div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="contact-line-text"><strong>E-mail</strong><span>l.s_now8@hotmail.com</span></div></div>
+        <div class="contact-line"><div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="contact-line-text"><strong>Atendimento</strong><span>São Paulo</span></div></div>
+        <div class="contact-line"><div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="contact-line-text"><strong>Horário</strong><span>Seg–Sex: 9h–18h</span></div></div>
+      </div>
+      <div class="gsap-fade">
+        <!-- Formulário envia direto para WhatsApp — sem backend necessário -->
+        <div class="form" id="contactForm">
+          <div class="form-row">
+            <div><label>Nome</label><input type="text" id="fName" placeholder="Seu nome completo"></div>
+            <div><label>WhatsApp</label><input type="tel" id="fPhone" placeholder="(11) 9 9999-9999"></div>
+          </div>
+          <div>
+            <label>Serviço de Interesse</label>
+            <select id="fService">
+              <option value="">Selecione...</option>
+              <option>Câmera de Segurança</option>
+              <option>Cerca Elétrica</option>
+              <option>Vídeo Porteiro</option>
+              <option>Alarme</option>
+              <option>Automatização de Portão e Travas Elétricas</option>
+              <option>Controle de Acesso / Fechadura</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div><label>Mensagem</label><textarea id="fMessage" placeholder="Descreva o que você precisa..."></textarea></div>
+          <!-- Botão envia direto para WhatsApp com nome + mensagem preenchidos -->
+          <button class="form-submit" onclick="sendWhatsApp()">
+            Enviar pelo WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div style="font-size:1.15rem;font-weight:900;letter-spacing:-.03em;"><span style="color:var(--gold);">L.S</span> NOW</div>
+        <p class="footer-brand-desc">Soluções em segurança eletrônica para residências, empresas e condomínios. Parceiro credenciado Intelbras.</p>
+      </div>
+      <div class="footer-col"><div class="footer-col-title">Serviços</div><ul><li><a href="#">Câmera de Segurança</a></li><li><a href="#">Cerca Elétrica</a></li><li><a href="#">Vídeo Porteiro</a></li><li><a href="#">Alarme</a></li><li><a href="#">Automatização</a></li><li><a href="#">Controle de Acesso</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Empresa</div><ul><li><a href="#">Sobre Nós</a></li><li><a href="#">Clientes</a></li><li><a href="#">Avaliações</a></li><li><a href="#">Contato</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Parceiros</div><ul><li><a href="#">Intelbras</a></li><li><a href="#">Garen</a></li><li><a href="#">PPA</a></li><li><a href="#">Route 66</a></li><li><a href="#">Telman</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 L.S Now. Todos os direitos reservados.</p><p>Segurança Eletrônica Profissional</p></div>
+  </div>
+</footer>
+
+<!-- ══ GOOGLE FLOAT ══ -->
+<a href="https://share.google/uzlzwkIR8Je0HCtAI" target="_blank" class="google-float" rel="noopener">
+  <svg class="g-logo" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-3.59-14.43-8.83l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+  <div class="g-info">
+    <div class="g-title">Google · Reviews</div>
+    <div class="g-stars"><span>★★★★★</span></div>
+    <div class="g-count">5.0 · 137 avaliações</div>
+  </div>
+  <div class="g-rating-num">5.0</div>
+</a>
+
+<!-- ══ WA FLOAT ══ -->
+<a href="https://wa.me/5511957696353" target="_blank" class="wa-float" rel="noopener">
+  <svg width="25" height="25" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ══════════════════════════════════════════════
+     ADMIN PANEL — invisível para visitantes
+     Abrir: Ctrl+Shift+L  ou  URL com ?admin
+     ══════════════════════════════════════════════ -->
+<div class="adm-overlay" id="admOverlay">
+  <button class="adm-close-login" onclick="admCloseLogin()">✕</button>
+  <div class="adm-login-card">
+    <div class="adm-login-logo"><span>L.S</span> NOW</div>
+    <div class="adm-login-sub">Área restrita — Administrador</div>
+    <div class="adm-field"><label>Usuário</label><input type="text" id="admUser" placeholder="admin" autocomplete="username"></div>
+    <div class="adm-field"><label>Senha</label><input type="password" id="admPass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')admLogin()"></div>
+    <button class="adm-login-btn" id="admLoginBtn" onclick="admLogin()">Entrar</button>
+    <div class="adm-login-err" id="admLoginErr"></div>
+  </div>
+</div>
+<div class="adm-drawer-bg" id="admBg" onclick="admCloseDrawer()"></div>
+<div class="adm-drawer" id="admDrawer">
+  <div class="adm-top">
+    <div class="adm-top-logo"><span>L.S</span> NOW &mdash; Mensagens</div>
+    <div class="adm-top-right">
+      <button class="adm-btn-sm" onclick="admRefresh()">↻ Atualizar</button>
+      <button class="adm-btn-sm" onclick="admExport()">↓ CSV</button>
+      <button class="adm-btn-sm danger" onclick="admLogout()">Sair</button>
+      <button class="adm-close-drawer" onclick="admCloseDrawer()">✕</button>
+    </div>
+  </div>
+  <div class="adm-stats">
+    <div class="adm-stat"><div class="adm-stat-num" id="aSTotal">—</div><div class="adm-stat-lbl">Total</div></div>
+    <div class="adm-stat"><div class="adm-stat-num red" id="aSUnread">—</div><div class="adm-stat-lbl">Não lidas</div></div>
+    <div class="adm-stat"><div class="adm-stat-num" id="aSToday">—</div><div class="adm-stat-lbl">Hoje</div></div>
+  </div>
+  <div class="adm-filters">
+    <button class="adm-filter active" onclick="admFilter('all',this)">Todas</button>
+    <button class="adm-filter" onclick="admFilter('unread',this)">Não lidas</button>
+    <button class="adm-filter" onclick="admFilter('read',this)">Lidas</button>
+    <input class="adm-search" type="text" id="admSearch" placeholder="Buscar…" oninput="admRender()">
+  </div>
+  <div class="adm-list" id="admList"></div>
+</div>
+<div class="adm-toast" id="admToast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   SERVICES DATA — com fotos reais
+   ══════════════════════════════════════════ */
+const svcData = {
+  cameras: {
+    title: 'Câmera de Segurança',
+    desc: 'Instalação profissional de câmeras internas e externas Intelbras em Full HD e 4K. Monitore em tempo real pelo celular com visão noturna, detecção de movimento e gravação contínua.',
+    items: [
+      { src:'camera 2.jpeg', label:'Câmeras Intelbras instaladas' },
+      { src:'camera 1.jpeg', label:'Câmera bullet dupla — portão' },
+      { src:'camera3.jpeg', label:'Câmera PTZ externa' },
+      { src:'camera4.jpeg', label:'TV com monitoramento 4 canais' },
+      { src:'camera 5.jpeg', label:'Câmera bullet preta — muro' },
+      { src:'camera 6.jpeg', label:'Câmeras Intelbras instaladas' },
+      { src:'camera7.jpeg', label:'Câmera bullet dupla — portão' },
+      { src:'camera8.jpeg', label:'Câmera PTZ externa' },
+      { src:'camera9.jpeg', label:'TV com monitoramento 4 canais' },
+      { src:'camera10.jpeg', label:'Câmera bullet preta — muro' },
+    ]
+  },
+  cerca: {
+    title: 'Cerca Elétrica',
+    desc: 'Proteção perimetral eficiente para residências, condomínios e empresas. Central com alarme integrado, resistência a intempéries e equipamentos certificados.',
+    items: [
+      { src:'cerca1.jpeg', label:'Cerca elétrica instalada — muro' },
+      { src:'cerca2.jpeg', label:'Central de cerca + sirene' },
+      { src:'cerca3.jpeg', label:'Central de cerca + sirene' },
+      { src:'vc.mp4', label:'Cerca elétrica instalada — muro', isVideo: true },
+  ]
+  },
+  video: {
+    title: 'Vídeo Porteiro',
+    desc: 'Controle o acesso com segurança. Veja e converse com visitantes, abra portões remotamente e registre todas as entradas, tudo pelo celular de qualquer lugar.',
+    items: [
+      { src:'videoporteiro.jpeg', label:'Vídeo porteiro Intelbras — interno' },
+      { src:'videoporteiro2.jpeg', label:'Ramal externo Intelbras Allo' },
+      { src:'videroporteiro3.jpeg', label:'Funcionamento ao vivo',},
+    ]
+  },
+  alarme: {
+    title: 'Alarme',
+    desc: 'Sistemas monitorados 24h com sensores de movimento, abertura de portas/janelas e detectores de fumaça. Notificação imediata no celular.',
+    items: [
+      { src:'alarme1.jpeg', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarme3.jpeg', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarme2.jpeg', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarmee.jpeg', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarmeee.jpeg', label:'Adicione foto', model:'Modelo aqui' },
+    ]
+  },
+  portao: {
+    title: 'Automatização de Portão e Travas Elétricas',
+    desc: 'Motores Garen de alta performance para portões deslizantes e basculantes, travas elétricas e controle remoto. Integração total com vídeo porteiro e câmeras.',
+    items: [
+      { src:'portao1.jpeg', label:'Motor Garen instalado' },
+      { src:'portao2.jpeg', label:'Trava elétrica — portão deslizante' },
+      { src:'portao.jpeg', label:'Motor Garen instalado' },
+      { src:'portao3.jpeg', label:'Trava elétrica — portão deslizante' },
+    ]
+  },
+  acesso: {
+    title: 'Controle de Acesso / Fechadura',
+    desc: 'Fechaduras digitais, biometria, reconhecimento facial e cartões RFID. Controle múltiplos usuários, gere relatórios e gerencie tudo pelo celular.',
+    items: [
+      { src:'porteiro1.jpeg', label:'Leitor de acesso externo' },
+      { src:'porteiro2.jpeg', label:'Trava de portão — Transvue' },
+      { src:'porteiro3.jpeg', label:'Câmera + leitor de acesso' },
+      { src:'porteiro4.jpeg', label:'Leitor de acesso externo' },
+      { src:'portyeiro5.jpeg', label:'Trava de portão — Transvue' },
+      { src:'porteiro6.jpeg', label:'Câmera + leitor de acesso' },
+       { src:'porteiro7.jpeg', label:'Leitor de acesso externo' },
+      { src:'videop.mp4', label:'Trava de portão — Transvue' , isVideo: true},
+      { src:'videopo.mp4', label:'Câmera + leitor de acesso' , isVideo: true},
+    ]
+  }
+};
+
+function openSvc(key) {
+  const d = svcData[key];
+  document.getElementById('svcModalTitle').textContent = d.title;
+  document.getElementById('svcModalDesc').textContent = d.desc;
+  const gallery = document.getElementById('svcModalGallery');
+  gallery.innerHTML = d.items.map(item => {
+    if (item.isVideo) {
+      return `<div class="gallery-real-img" style="background:#000;">
+        <video src="${item.src}" controls playsinline style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px;"></video>
+        <div class="img-label">${item.label}</div>
+      </div>`;
+    } else if (item.src) {
+      return `<div class="gallery-real-img">
+        <img src="${item.src}" alt="${item.label}" loading="lazy"
+             onerror="this.parentNode.className='gallery-slot';this.parentNode.innerHTML='<div class=\\'gallery-slot-label\\'>${item.label}</div><div class=\\'gallery-hint\\'>Imagem não encontrada</div>'">
+        <div class="img-label">${item.label}</div>
+      </div>`;
+    } else {
+      return `<div class="gallery-slot">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <div class="gallery-slot-label">${item.label}</div>
+        <div class="gallery-slot-model">${item.model||''}</div>
+        <div class="gallery-hint">← substitua pela imagem real</div>
+      </div>`;
+    }
+  }).join('');
+  document.getElementById('svcModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSvc() { document.getElementById('svcModalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+function closeSvcOutside(e) { if (e.target.id === 'svcModalOverlay') closeSvc(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSvc(); });
+
+/* ══════════════════════════════════════════
+   FORMULÁRIO → WHATSAPP (sem backend)
+   ══════════════════════════════════════════ */
+function sendWhatsApp() {
+  const name    = (document.getElementById('fName').value || '').trim();
+  const phone   = (document.getElementById('fPhone').value || '').trim();
+  const service = document.getElementById('fService').value;
+  const message = (document.getElementById('fMessage').value || '').trim();
+
+  if (!name) { alert('Por favor, informe seu nome.'); return; }
+  if (!service) { alert('Por favor, selecione um serviço.'); return; }
+
+  const waNum = '5511957696353'; // ← altere para o número real
+  const text  = encodeURIComponent(
+    `Olá! Vim pelo site L.S Now.\n\n` +
+    `👤 *Nome:* ${name}\n` +
+    (phone ? `📱 *Telefone:* ${phone}\n` : '') +
+    `🔧 *Serviço:* ${service}\n` +
+    (message ? `💬 *Mensagem:* ${message}` : '')
+  );
+  window.open(`https://wa.me/${waNum}?text=${text}`, '_blank');
+}
+
+/* ══════════════════════════════════════════
+   ANIMATIONS
+   ══════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  initAnimations();
+});
+
+function initAnimations() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero entrance
+  gsap.timeline({ defaults:{ ease:'power3.out' } })
+    .to('#heroLabel',   { opacity:1, y:0, duration:.7, delay:.1 }, 0)
+    .fromTo('#heroTitle', { y:50, opacity:0 }, { y:0, opacity:1, duration:1.0 }, .2)
+    .fromTo('#heroSub',   { y:36, opacity:0 }, { y:0, opacity:1, duration:.8 }, .45)
+    .fromTo('#heroActions',{ y:28, opacity:0 }, { y:0, opacity:1, duration:.7 }, .65)
+    .fromTo('#heroCam',   { opacity:0 }, { opacity:1, duration:1.4, ease:'power2.out' }, .2)
+    .fromTo('#scrollHint',{ opacity:0 }, { opacity:1, duration:.6 }, 1.1);
+
+  // Van parallax on scroll
+  gsap.to('.hero-van-img', {
+    scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true },
+    y: -50, ease:'none'
+  });
+
+  // Story
+  const storyData = [
+    { tag:'Inovação', h:'Veja tudo.<br><span style="color:#b89a00">Proteja sempre.</span>', p:'Câmeras 4K com IA que captam cada detalhe, dia e noite, com alertas em tempo real.' },
+    { tag:'Mobilidade', h:'Sua segurança<br><span style="color:#b89a00">no bolso.</span>', p:'Acesso remoto pelo celular, de qualquer lugar. Veja ao vivo e receba alertas instantâneos.' },
+    { tag:'Proteção', h:'Defesa total.<br><span style="color:#b89a00">24 horas.</span>', p:'Alarmes inteligentes e sensores que trabalham sem parar para manter seu patrimônio seguro.' },
+    { tag:'Confiança', h:'Instalação<br><span style="color:#b89a00">certificada.</span>', p:'Equipe técnica especializada, produtos premium e suporte pós-instalação garantido.' }
+  ];
+  ScrollTrigger.create({
+    trigger:'#storyPanels', start:'top top', end:'bottom bottom',
+    pin:'#storySticky', scrub:false,
+    onUpdate: self => {
+      const idx = Math.min(Math.floor(self.progress * storyData.length), storyData.length - 1);
+      if (window._si !== idx) {
+        window._si = idx; const d = storyData[idx];
+        gsap.to('#story1', { opacity:0, y:-24, duration:.25, onComplete: () => {
+          document.getElementById('storyTag').textContent = d.tag;
+          document.getElementById('storyHeadline').innerHTML = d.h;
+          document.getElementById('storyDesc').textContent = d.p;
+          gsap.fromTo('#story1', { opacity:0, y:24 }, { opacity:1, y:0, duration:.4, ease:'power2.out' });
+        }});
+      }
+    }
+  });
+
+  // Fade-in elements
+  gsap.utils.toArray('.gsap-fade').forEach((el, i) => {
+    gsap.fromTo(el, { opacity:0, y:32 }, {
+      opacity:1, y:0, duration:.75, ease:'power2.out',
+      scrollTrigger:{ trigger:el, start:'top 86%', toggleActions:'play none none none' },
+      delay: (i % 3) * 0.07
+    });
+  });
+
+  // Feature cells
+  gsap.fromTo('.feature-cell', { opacity:0, y:24 }, {
+    opacity:1, y:0, duration:.55, stagger:.09, ease:'power2.out',
+    scrollTrigger:{ trigger:'.features-grid', start:'top 82%' }
+  });
+
+  // Counters
+  gsap.utils.toArray('.count').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    ScrollTrigger.create({ trigger:el, start:'top 82%', once:true, onEnter: () => {
+      gsap.to({ val:0 }, { val:target, duration:1.8, ease:'power2.out', onUpdate:function(){ el.textContent = Math.round(this.targets()[0].val); } });
+    }});
+  });
+
+  // Nav border on scroll
+  ScrollTrigger.create({
+    start:'80px top',
+    onEnter: () => gsap.to('.nav', { borderBottomColor:'rgba(255,255,255,.1)', duration:.3 }),
+    onLeaveBack: () => gsap.to('.nav', { borderBottomColor:'rgba(255,255,255,.07)', duration:.3 })
+  });
+}
+
+/* DEMO */
+const demoModes = {
+  night:  { bg:'radial-gradient(ellipse 50% 50% at 50% 50%,rgba(5,20,35,.9),#050d14)', hud:'CAM 02 — GARAGEM\nMODE: NIGHT VISION\nIR: ATIVO\nVISIBILIDADE: 30m', badge:'VISÃO NOTURNA IR', bC:'rgba(180,255,180,.9)', bB:'rgba(0,180,0,.15)', bBo:'rgba(0,180,0,.4)' },
+  detect: { bg:'radial-gradient(ellipse 40% 40% at 60% 40%,rgba(0,50,80,.8),#040d14)', hud:'CAM 01 — ENTRADA\nIA: DETECTANDO\nCONFIANÇA: 98%\nALERTA: ENVIADO', badge:'PESSOA DETECTADA', bC:'rgba(0,255,100,.9)', bB:'rgba(0,255,100,.15)', bBo:'rgba(0,255,100,.4)' },
+  remote: { bg:'radial-gradient(ellipse 60% 60% at 30% 60%,rgba(0,50,100,.6),#060d18)', hud:'ACESSO REMOTO\nUSER: PROPRIETÁRIO\nCONEXÃO: SEGURA\nLATENCY: 12ms', badge:'TRANSMISSÃO AO VIVO', bC:'rgba(100,180,255,.9)', bB:'rgba(0,100,255,.15)', bBo:'rgba(0,100,255,.4)' }
+};
+function setDemo(btn, mode) {
+  document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const m = demoModes[mode], v = document.getElementById('demoView');
+  gsap.to(v, { opacity:0, duration:.18, onComplete: () => {
+    v.style.background = m.bg;
+    document.getElementById('demoHud').innerHTML = m.hud.replace(/\n/g,'<br>');
+    const b = document.getElementById('demoBadge');
+    b.textContent = m.badge; b.style.color = m.bC; b.style.background = m.bB; b.style.borderColor = m.bBo;
+    gsap.to(v, { opacity:1, duration:.28 });
+  }});
+}
+
+/* MENU */
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+
+/* ORBS PARALLAX */
+document.addEventListener('mousemove', e => {
+  const x = (e.clientX/innerWidth-.5)*28, y = (e.clientY/innerHeight-.5)*28;
+  gsap.to('.orb1', { x:x*.7, y:y*.7, duration:1.4, ease:'power1.out' });
+  gsap.to('.orb2', { x:-x*.4, y:-y*.4, duration:1.8, ease:'power1.out' });
+  gsap.to('.orb3', { x:x*1.1, y:y*1.1, duration:1.1, ease:'power1.out' });
+});
+
+/* ══════════════════════════════════════════
+   ADMIN PANEL
+   ══════════════════════════════════════════ */
+const ADM_BACKEND = 'http://localhost:3001';
+const ADM_KEY     = 'lsnow_adm_token';
+let admToken = localStorage.getItem(ADM_KEY) || '';
+let admMessages = [], admCurFilter = 'all';
+
+function admOpenLogin() { document.getElementById('admOverlay').classList.add('open'); document.getElementById('admLoginErr').textContent=''; setTimeout(()=>document.getElementById('admUser').focus(),300); }
+function admCloseLogin() { document.getElementById('admOverlay').classList.remove('open'); }
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.shiftKey && e.key==='L') { e.preventDefault(); admToken ? admOpenDrawer() : admOpenLogin(); }
+});
+if (new URLSearchParams(location.search).has('admin')) {
+  window.addEventListener('load', () => setTimeout(() => { admToken ? admOpenDrawer() : admOpenLogin(); }, 1400));
+}
+
+async function admLogin() {
+  const user=document.getElementById('admUser').value.trim(), pass=document.getElementById('admPass').value;
+  const errEl=document.getElementById('admLoginErr'), btn=document.getElementById('admLoginBtn');
+  if (!user||!pass){errEl.textContent='Preencha usuário e senha.';return;}
+  btn.textContent='Entrando…';btn.disabled=true;
+  try {
+    const res=await fetch(`${ADM_BACKEND}/api/admin/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:user,password:pass})});
+    const data=await res.json();
+    if(data.ok){admToken=data.token;localStorage.setItem(ADM_KEY,admToken);admCloseLogin();admOpenDrawer();}
+    else errEl.textContent=data.error||'Credenciais incorretas.';
+  } catch { errEl.textContent='Não foi possível conectar ao servidor.'; }
+  btn.textContent='Entrar';btn.disabled=false;
+}
+async function admLogout(){
+  try{await fetch(`${ADM_BACKEND}/api/admin/logout`,{method:'POST',headers:{'x-session-token':admToken}});}catch{}
+  admToken='';localStorage.removeItem(ADM_KEY);admCloseDrawer();admToast('Sessão encerrada.','ok');
+}
+function admOpenDrawer(){document.getElementById('admDrawer').classList.add('open');document.getElementById('admBg').classList.add('open');document.body.style.overflow='hidden';admRefresh();}
+function admCloseDrawer(){document.getElementById('admDrawer').classList.remove('open');document.getElementById('admBg').classList.remove('open');document.body.style.overflow='';}
+async function admRefresh(){
+  try{
+    const res=await fetch(`${ADM_BACKEND}/api/admin/messages`,{headers:{'x-session-token':admToken}});
+    if(res.status===401){admHandleUnauth();return;}
+    const data=await res.json(); admMessages=data.messages||[]; admUpdateStats(); admRender();
+  }catch{admToast('Erro ao carregar mensagens.','err');}
+}
+function admHandleUnauth(){admToken='';localStorage.removeItem(ADM_KEY);admCloseDrawer();document.getElementById('admLoginErr').textContent='Sessão expirada. Faça login novamente.';admOpenLogin();}
+function admUpdateStats(){
+  const today=new Date().toLocaleDateString('pt-BR');
+  document.getElementById('aSTotal').textContent=admMessages.length;
+  document.getElementById('aSUnread').textContent=admMessages.filter(m=>!m.read).length;
+  document.getElementById('aSToday').textContent=admMessages.filter(m=>m.date&&m.date.startsWith(today)).length;
+}
+function admFilter(f,el){admCurFilter=f;document.querySelectorAll('.adm-filter').forEach(b=>b.classList.remove('active'));el.classList.add('active');admRender();}
+function admRender(){
+  const q=(document.getElementById('admSearch').value||'').toLowerCase();
+  let msgs=admMessages;
+  if(admCurFilter==='unread')msgs=msgs.filter(m=>!m.read);
+  if(admCurFilter==='read')msgs=msgs.filter(m=>m.read);
+  if(q)msgs=msgs.filter(m=>m.name.toLowerCase().includes(q)||m.service.toLowerCase().includes(q)||(m.message||'').toLowerCase().includes(q)||m.phone.includes(q));
+  const list=document.getElementById('admList');
+  if(!msgs.length){list.innerHTML='<div class="adm-empty"><p>Nenhuma mensagem encontrada.</p></div>';return;}
+  list.innerHTML=msgs.map(m=>`
+    <div class="adm-card ${m.read?'':'unread'}">
+      <div class="adm-card-top">${!m.read?'<div class="adm-unread-dot"></div>':''}<div class="adm-card-name">${esc(m.name)}</div><span class="adm-card-badge">${esc(m.service)}</span><div class="adm-card-date">${esc(m.date)}</div></div>
+      <div class="adm-card-phone">${esc(m.phone)}</div>
+      ${m.message?`<div class="adm-card-msg">${esc(m.message)}</div>`:''}
+      <div class="adm-card-actions">
+        <a href="https://wa.me/55${m.phone.replace(/\D/g,'')}" target="_blank" class="adm-wa-btn">WhatsApp</a>
+        ${!m.read?`<button class="adm-read-btn" onclick="admMarkRead('${m.id}')">Marcar lida</button>`:''}
+        <button class="adm-del-btn" onclick="admDelete('${m.id}')">Excluir</button>
+      </div>
+    </div>`).join('');
+}
+async function admMarkRead(id){
+  try{const res=await fetch(`${ADM_BACKEND}/api/admin/messages/${id}/read`,{method:'PATCH',headers:{'x-session-token':admToken}});if(res.status===401){admHandleUnauth();return;}const m=admMessages.find(m=>m.id===id);if(m){m.read=true;admUpdateStats();admRender();}admToast('Marcada como lida.','ok');}catch{admToast('Erro.','err');}
+}
+async function admDelete(id){
+  if(!confirm('Excluir esta mensagem?'))return;
+  try{const res=await fetch(`${ADM_BACKEND}/api/admin/messages/${id}`,{method:'DELETE',headers:{'x-session-token':admToken}});if(res.status===401){admHandleUnauth();return;}admMessages=admMessages.filter(m=>m.id!==id);admUpdateStats();admRender();admToast('Excluída.','ok');}catch{admToast('Erro.','err');}
+}
+async function admExport(){
+  try{const res=await fetch(`${ADM_BACKEND}/api/admin/export`,{headers:{'x-session-token':admToken}});if(res.status===401){admHandleUnauth();return;}const blob=await res.blob();const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mensagens-lsnow.csv';a.click();}catch{admToast('Erro ao exportar.','err');}
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function admToast(msg,type='ok'){const t=document.getElementById('admToast');t.textContent=msg;t.className='adm-toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
+</script>
+</body>
+</html>

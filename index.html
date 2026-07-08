@@ -238,23 +238,18 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .story-panel-text h2{font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:800;line-height:1.1;letter-spacing:-.04em;color:#0d0d0d;}
 .story-panel-text p{font-size:1.05rem;color:#555;font-weight:300;margin-top:18px;line-height:1.7;}
 
-/* ── FEATURES ── */
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray);border:1px solid var(--gray);border-radius:20px;overflow:hidden;margin-top:64px;}
-.feature-cell{background:var(--dark2);padding:44px 32px;transition:background .3s;}
-.feature-cell:hover{background:var(--dark3);}
-.feature-icon-wrap{width:48px;height:48px;background:rgba(245,196,0,.1);border:1px solid rgba(245,196,0,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
-.feature-icon-wrap svg{color:var(--gold);}
-.feature-cell h3{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;}
-.feature-cell p{font-size:.83rem;color:var(--light);line-height:1.65;}
-
 /* ── SERVICES ── */
 .services-section{background:var(--dark2);}
 .services-header{text-align:center;margin-bottom:56px;}
 .services-grid-6{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .svc-card{background:var(--dark3);border:1px solid var(--gray);border-radius:18px;overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;}
 .svc-card:hover{border-color:rgba(245,196,0,.4);transform:translateY(-5px);box-shadow:0 14px 40px rgba(0,0,0,.35);}
-.svc-num{position:absolute;top:14px;left:18px;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);opacity:.55;}
-.svc-icon-area{padding:48px 26px 20px;display:flex;align-items:center;gap:14px;}
+.svc-card-img{aspect-ratio:16/10;position:relative;overflow:hidden;background:var(--dark3);}
+.svc-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+.svc-card:hover .svc-card-img img{transform:scale(1.07);}
+.svc-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(28,28,30,.9) 0%,rgba(28,28,30,0) 50%);pointer-events:none;}
+.svc-num{position:absolute;top:14px;left:18px;z-index:1;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);background:rgba(13,13,13,.5);padding:3px 8px;border-radius:6px;}
+.svc-icon-area{padding:16px 26px 2px;display:flex;align-items:center;gap:14px;}
 .svc-icon{width:48px;height:48px;background:rgba(245,196,0,.1);border:1px solid rgba(245,196,0,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .svc-icon svg{color:var(--gold);}
 .svc-title{font-size:clamp(.9rem,1.3vw,1.1rem);font-weight:700;letter-spacing:-.02em;line-height:1.3;}
@@ -283,15 +278,10 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 }
 .gallery-real-img img{
   width:100%;height:100%;object-fit:cover;display:block;
+  cursor:zoom-in;
   transition:transform .4s ease;
 }
 .gallery-real-img:hover img{transform:scale(1.05);}
-.gallery-real-img .img-label{
-  position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(to top,rgba(0,0,0,.75),transparent);
-  color:rgba(255,255,255,.85);font-size:.65rem;font-weight:600;
-  padding:8px 10px;letter-spacing:.04em;
-}
 /* Placeholder slot (when no image) */
 .gallery-slot{aspect-ratio:4/3;background:var(--dark3);border:1.5px dashed rgba(245,196,0,.2);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;gap:6px;}
 .gallery-slot svg{opacity:.25;color:var(--gold);}
@@ -299,6 +289,14 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .gallery-slot-model{font-size:.72rem;font-weight:700;color:rgba(245,196,0,.6);margin-top:2px;}
 .gallery-hint{font-size:.52rem;color:var(--mid);font-style:italic;}
 .svc-modal-cta{margin-top:22px;display:flex;justify-content:flex-end;}
+
+/* ── IMAGE LIGHTBOX ── */
+.lightbox-overlay{position:fixed;inset:0;z-index:210000;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.lightbox-overlay.open{opacity:1;pointer-events:all;}
+.lightbox-overlay img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:8px;transform:scale(.96);transition:transform .3s cubic-bezier(.23,1,.32,1);}
+.lightbox-overlay.open img{transform:scale(1);}
+.lightbox-close{position:absolute;top:22px;right:22px;width:38px;height:38px;border-radius:50%;background:var(--dark3);border:1px solid var(--gray);color:var(--white);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.lightbox-close:hover{background:var(--gray);}
 
 /* ── STATS ── */
 .stats-section{background:var(--dark3);padding:90px 0;border-top:1px solid var(--gray);border-bottom:1px solid var(--gray);}
@@ -551,7 +549,6 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
   .hero-label,.hero h1,.hero-sub{text-align:center;align-self:center;padding-left:20px;}
   .hero h1{max-width:100%;}
   .hero-actions{justify-content:center;padding:0 20px;}
-  .features-grid{grid-template-columns:1fr 1fr;}
   .services-grid-6{grid-template-columns:repeat(2,1fr);}
   .demo-wrap{grid-template-columns:1fr;gap:36px;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
@@ -562,7 +559,6 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 }
 @media(max-width:600px){
   .container{padding:0 20px;}.section{padding:80px 0;}
-  .features-grid{grid-template-columns:1fr;}
   .services-grid-6{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:1fr 1fr;}
   .clients-logos-grid{grid-template-columns:repeat(2,1fr);}
@@ -665,31 +661,37 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
     </div>
     <div class="services-grid-6">
       <div class="svc-card gsap-fade" onclick="openSvc('cameras')">
+        <div class="svc-card-img"><img src="camera 2.jpeg" alt="Câmera de Segurança instalada" loading="lazy"></div>
         <div class="svc-num">01</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="svc-title">Câmera de Segurança</div></div>
         <div class="svc-body"><p class="svc-desc">Câmeras internas e externas com acesso remoto, visão noturna e gravação 24h em alta definição.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('cerca')">
+        <div class="svc-card-img"><img src="cerca1.jpeg" alt="Cerca Elétrica instalada" loading="lazy"></div>
         <div class="svc-num">02</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2v20M11 2v20"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="18" x2="20" y2="18"/></svg></div><div class="svc-title">Cerca Elétrica</div></div>
         <div class="svc-body"><p class="svc-desc">Proteção perimetral de alta performance para residências, condomínios e empresas.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('video')">
+        <div class="svc-card-img"><img src="videoporteiro.jpeg" alt="Vídeo Porteiro instalado" loading="lazy"></div>
         <div class="svc-num">03</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.899L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div><div class="svc-title">Vídeo Porteiro</div></div>
         <div class="svc-body"><p class="svc-desc">Controle de acesso com vídeo porteiro, abertura remota pelo celular e registro de visitantes.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('alarme')">
+        <div class="svc-card-img"><img src="alarme1.jpeg" alt="Alarme instalado" loading="lazy"></div>
         <div class="svc-num">04</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div><div class="svc-title">Alarme</div></div>
         <div class="svc-body"><p class="svc-desc">Sistemas monitorados 24h com sensores de movimento, abertura e fumaça. Sirene de alta potência.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('portao')">
+        <div class="svc-card-img"><img src="portao1.jpeg" alt="Automatização de Portão instalada" loading="lazy"></div>
         <div class="svc-num">05</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h6v8h-6"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="svc-title">Automatização de Portão e Travas Elétricas</div></div>
         <div class="svc-body"><p class="svc-desc">Motores Garen para portões deslizantes e basculantes, travas elétricas e controle remoto completo.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('acesso')">
+        <div class="svc-card-img"><img src="porteiro1.jpeg" alt="Controle de Acesso instalado" loading="lazy"></div>
         <div class="svc-num">06</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="svc-title">Controle de Acesso / Fechadura</div></div>
         <div class="svc-body"><p class="svc-desc">Fechaduras digitais, biometria, reconhecimento facial e cartões RFID para acesso inteligente.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
@@ -718,6 +720,14 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
       </div>
     </div>
   </div>
+</div>
+
+<!-- IMAGE LIGHTBOX -->
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightboxOutside(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <img id="lightboxImg" src="" alt="">
 </div>
 
 <!-- ══ STATS ══ -->
@@ -869,41 +879,6 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
       <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Instalaram o alarme e o vídeo porteiro no mesmo dia. Nota 10! Equipe competente, suporte pós-venda fantástico.</p><div class="rev-author"><div class="rev-avatar">C</div><div><div class="rev-name">Carla Mendes</div><div class="rev-role">Moradora · há 2 meses</div></div></div></div>
       <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Câmeras Intelbras instaladas com maestria. Qualidade premium, instalação limpa. Vale cada centavo!</p><div class="rev-author"><div class="rev-avatar">J</div><div><div class="rev-name">João Costa</div><div class="rev-role">Empresário · há 3 meses</div></div></div></div>
       <div class="rev-card"><div class="rev-quote">"</div><div class="rev-stars"><span>★★★★★</span></div><p class="rev-text">Contratei para o condomínio e superou expectativas. Câmeras em todos os pontos, qualidade extraordinária!</p><div class="rev-author"><div class="rev-avatar">L</div><div><div class="rev-name">Luciana Ramos</div><div class="rev-role">Síndica · há 3 meses</div></div></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ FEATURES (Por que nos escolher) ══ -->
-<section class="section gsap-fade" id="beneficios" style="background:#f5f5f7;">
-  <div class="container">
-    <div class="tag" style="color:#b89a00;">Por que nos escolher</div>
-    <h2 class="headline" style="color:#0d0d0d;">Tecnologia que <span style="color:#b89a00;font-style:normal;">funciona</span>.</h2>
-    <p class="subtext" style="color:#444;">Equipamentos de ponta, instalação profissional e suporte contínuo para sua total tranquilidade.</p>
-    <div class="features-grid" style="background:#ddd;border-color:#ddd;">
-      <div class="feature-cell" style="background:#fff;">
-        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg></div>
-        <h3 style="color:#0d0d0d;">Acesso Remoto</h3><p style="color:#555;">Monitore sua propriedade de qualquer lugar do mundo, em tempo real, pelo celular ou computador.</p>
-      </div>
-      <div class="feature-cell" style="background:#fff;">
-        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
-        <h3 style="color:#0d0d0d;">Alta Definição 4K</h3><p style="color:#555;">Imagens Ultra HD com zoom digital avançado para identificação clara em qualquer condição.</p>
-      </div>
-      <div class="feature-cell" style="background:#fff;">
-        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
-        <h3 style="color:#0d0d0d;">Visão Noturna</h3><p style="color:#555;">Tecnologia infravermelha que garante visibilidade total mesmo no escuro absoluto.</p>
-      </div>
-      <div class="feature-cell" style="background:#fff;">
-        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/></svg></div>
-        <h3 style="color:#0d0d0d;">Inteligência Artificial</h3><p style="color:#555;">Detecção automática de pessoas e veículos com alertas instantâneos no seu celular.</p>
-      </div>
-      <div class="feature-cell" style="background:#fff;">
-        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-        <h3 style="color:#0d0d0d;">Backup em Nuvem</h3><p style="color:#555;">Gravações seguras com acesso a histórico de 30 dias, sem risco de perda de dados.</p>
-      </div>
-      <div class="feature-cell" style="background:#fff;">
-        <div class="feature-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b89a00" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
-        <h3 style="color:#0d0d0d;">Suporte &amp; Garantia</h3><p style="color:#555;">Instalação certificada, assistência técnica especializada e garantia em todos os serviços.</p>
-      </div>
     </div>
   </div>
 </section>
@@ -1128,13 +1103,11 @@ function openSvc(key) {
     if (item.isVideo) {
       return `<div class="gallery-real-img" style="background:#000;">
         <video src="${item.src}" controls playsinline style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px;"></video>
-        <div class="img-label">${item.label}</div>
       </div>`;
     } else if (item.src) {
       return `<div class="gallery-real-img">
-        <img src="${item.src}" alt="${item.label}" loading="lazy"
+        <img src="${item.src}" alt="${item.label}" loading="lazy" onclick="openLightbox('${item.src}')"
              onerror="this.parentNode.className='gallery-slot';this.parentNode.innerHTML='<div class=\\'gallery-slot-label\\'>${item.label}</div><div class=\\'gallery-hint\\'>Imagem não encontrada</div>'">
-        <div class="img-label">${item.label}</div>
       </div>`;
     } else {
       return `<div class="gallery-slot">
@@ -1150,7 +1123,17 @@ function openSvc(key) {
 }
 function closeSvc() { document.getElementById('svcModalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 function closeSvcOutside(e) { if (e.target.id === 'svcModalOverlay') closeSvc(); }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSvc(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSvc(); closeLightbox(); } });
+
+/* ══════════════════════════════════════════
+   IMAGE LIGHTBOX
+   ══════════════════════════════════════════ */
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxOverlay').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightboxOverlay').classList.remove('open'); }
+function closeLightboxOutside(e) { if (e.target.id === 'lightboxOverlay') closeLightbox(); }
 
 /* ══════════════════════════════════════════
    FORMULÁRIO → WHATSAPP (sem backend)
@@ -1232,12 +1215,6 @@ function initAnimations() {
       scrollTrigger:{ trigger:el, start:'top 86%', toggleActions:'play none none none' },
       delay: (i % 3) * 0.07
     });
-  });
-
-  // Feature cells
-  gsap.fromTo('.feature-cell', { opacity:0, y:24 }, {
-    opacity:1, y:0, duration:.55, stagger:.09, ease:'power2.out',
-    scrollTrigger:{ trigger:'.features-grid', start:'top 82%' }
   });
 
   // Counters

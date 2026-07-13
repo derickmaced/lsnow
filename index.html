@@ -230,13 +230,20 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .headline em{font-style:normal;color:var(--gold);}
 .subtext{font-size:.97rem;font-weight:300;color:var(--light);line-height:1.75;max-width:520px;margin-top:18px;}
 
-/* ── STORY ── */
-.story-section{background:#f5f5f7;padding:0;}
-.story-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.story-panels{height:400vh;position:relative;}
-.story-panel-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;max-width:700px;width:100%;padding:0 24px;}
-.story-panel-text h2{font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:800;line-height:1.1;letter-spacing:-.04em;color:#0d0d0d;}
-.story-panel-text p{font-size:1.05rem;color:#555;font-weight:300;margin-top:18px;line-height:1.7;}
+/* ── FOUNDER / SOBRE ── */
+.founder-wrap{display:grid;grid-template-columns:.82fr 1.18fr;gap:70px;align-items:center;}
+.founder-photo-wrap{position:relative;}
+.founder-photo-card{position:relative;max-width:380px;margin:0 auto;}
+.founder-photo-card::before{content:'';position:absolute;left:50%;top:6%;transform:translateX(-50%);width:130%;height:105%;background:radial-gradient(ellipse 50% 50% at 50% 38%,rgba(245,196,0,.16),transparent 72%);pointer-events:none;z-index:0;}
+.founder-photo-card img{position:relative;z-index:1;width:100%;display:block;object-fit:contain;filter:drop-shadow(0 26px 40px rgba(0,0,0,.55));}
+.founder-quote{font-size:1.05rem;font-weight:300;color:var(--white);line-height:1.8;border-left:3px solid var(--gold);padding-left:22px;margin-bottom:28px;}
+.founder-quote em{font-style:normal;color:var(--gold);font-weight:600;}
+.founder-badges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px;}
+.founder-badge{font-size:.72rem;font-weight:600;color:var(--gold);background:rgba(245,196,0,.08);border:1px solid rgba(245,196,0,.25);border-radius:50px;padding:7px 14px;}
+.founder-sign{display:flex;align-items:center;gap:14px;}
+.founder-sign-line{width:36px;height:2px;background:var(--gold);display:block;}
+.founder-sign-name{font-weight:700;font-size:.92rem;letter-spacing:-.01em;}
+.founder-sign-role{font-size:.78rem;color:var(--light);margin-top:2px;}
 
 /* ── SERVICES ── */
 .services-section{background:var(--dark2);}
@@ -551,6 +558,8 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
   .hero-actions{justify-content:center;padding:0 20px;}
   .services-grid-6{grid-template-columns:repeat(2,1fr);}
   .demo-wrap{grid-template-columns:1fr;gap:36px;}
+  .founder-wrap{grid-template-columns:1fr;gap:48px;}
+  .founder-photo-card{max-width:320px;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
   .clients-logos-grid{grid-template-columns:repeat(3,1fr);}
   .contact-grid{grid-template-columns:1fr;gap:44px;}
@@ -639,13 +648,27 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 </section>
 
 <!-- ══ STORY ══ -->
-<section class="story-section" id="sobre">
-  <div class="story-panels" id="storyPanels">
-    <div class="story-sticky" id="storySticky">
-      <div class="story-panel-text" id="story1">
-        <div class="tag" id="storyTag">Inovação</div>
-        <h2 id="storyHeadline">Veja tudo.<br><span style="color:var(--gold)">Proteja sempre.</span></h2>
-        <p id="storyDesc">Câmeras 4K Ultra HD com IA que captam cada detalhe, dia e noite, com alertas em tempo real.</p>
+<section class="section section-dark founder-section" id="sobre">
+  <div class="container founder-wrap">
+    <div class="founder-photo-wrap gsap-fade">
+      <div class="founder-photo-card">
+        <img src="img/lazaro-fundador.png" alt="Lázaro Souza, fundador da L.S Now" loading="lazy">
+      </div>
+    </div>
+    <div class="founder-content gsap-fade">
+      <div class="tag">O Fundador</div>
+      <h2 class="headline" style="margin-bottom:24px;">Lázaro Souza</h2>
+      <blockquote class="founder-quote">Representada e coordenada por Lázaro Souza, a L.S Now é especializada em soluções de <em>segurança eletrônica</em> para residências, empresas e condomínios. Cada projeto é desenvolvido com foco em <em>qualidade, tecnologia e uma instalação executada com precisão</em>, garantindo proteção e confiabilidade em cada detalhe.</blockquote>
+      <div class="founder-badges">
+        <span class="founder-badge">Parceiro credenciado Intelbras</span>
+        <span class="founder-badge">Atendimento em São Paulo</span>
+      </div>
+      <div class="founder-sign">
+        <span class="founder-sign-line"></span>
+        <div>
+          <div class="founder-sign-name">Lázaro Souza</div>
+          <div class="founder-sign-role">Fundador da L.S Now</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1182,30 +1205,6 @@ function initAnimations() {
   gsap.to('.hero-van-img', {
     scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true },
     y: -50, ease:'none'
-  });
-
-  // Story
-  const storyData = [
-    { tag:'Inovação', h:'Veja tudo.<br><span style="color:#b89a00">Proteja sempre.</span>', p:'Câmeras 4K com IA que captam cada detalhe, dia e noite, com alertas em tempo real.' },
-    { tag:'Mobilidade', h:'Sua segurança<br><span style="color:#b89a00">no bolso.</span>', p:'Acesso remoto pelo celular, de qualquer lugar. Veja ao vivo e receba alertas instantâneos.' },
-    { tag:'Proteção', h:'Defesa total.<br><span style="color:#b89a00">24 horas.</span>', p:'Alarmes inteligentes e sensores que trabalham sem parar para manter seu patrimônio seguro.' },
-    { tag:'Confiança', h:'Instalação<br><span style="color:#b89a00">certificada.</span>', p:'Equipe técnica especializada, produtos premium e suporte pós-instalação garantido.' }
-  ];
-  ScrollTrigger.create({
-    trigger:'#storyPanels', start:'top top', end:'bottom bottom',
-    pin:'#storySticky', scrub:false,
-    onUpdate: self => {
-      const idx = Math.min(Math.floor(self.progress * storyData.length), storyData.length - 1);
-      if (window._si !== idx) {
-        window._si = idx; const d = storyData[idx];
-        gsap.to('#story1', { opacity:0, y:-24, duration:.25, onComplete: () => {
-          document.getElementById('storyTag').textContent = d.tag;
-          document.getElementById('storyHeadline').innerHTML = d.h;
-          document.getElementById('storyDesc').textContent = d.p;
-          gsap.fromTo('#story1', { opacity:0, y:24 }, { opacity:1, y:0, duration:.4, ease:'power2.out' });
-        }});
-      }
-    }
   });
 
   // Fade-in elements

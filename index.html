@@ -183,9 +183,11 @@ function gtag_report_conversion(url) {
 </script>
 <link rel="icon" href="img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="img/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
 /* ══════════════════════════════════════════
    DESIGN TOKENS
@@ -564,6 +566,15 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
   .g-info,.g-rating-num{display:none;}
   .g-logo{width:26px;height:26px;}
 }
+/* PC: selo do Google maior */
+@media(min-width:1024px){
+  .google-float{bottom:28px;left:28px;padding:18px 24px;gap:18px;border-radius:20px;min-width:320px;}
+  .g-logo{width:44px;height:44px;}
+  .g-title{font-size:.92rem;}
+  .g-stars span{font-size:1.2rem;}
+  .g-count{font-size:.8rem;}
+  .g-rating-num{font-size:2.1rem;}
+}
 
 /* ── CTA ── */
 .cta-section{background:var(--black);padding:140px 0;text-align:center;position:relative;overflow:hidden;}
@@ -791,7 +802,7 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 
   <!-- Van photo — z=1 -->
   <div class="hero-cam-wrap" id="heroCam">
-    <img class="hero-van-img" src="van.jpeg" alt="Veículo L.S Now — Soluções em Segurança Eletrônica">
+    <img class="hero-van-img" fetchpriority="high" src="van.webp" alt="Veículo L.S Now — Soluções em Segurança Eletrônica">
     <div class="hero-van-accent"></div>
   </div>
 
@@ -822,7 +833,7 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
   <div class="container founder-wrap">
     <div class="founder-photo-wrap gsap-fade">
       <div class="founder-photo-card">
-        <img src="img/lazaro-fundador.png" alt="Lázaro Souza, fundador da L.S Now" loading="lazy">
+        <img src="img/lazaro-fundador.webp" alt="Lázaro Souza, fundador da L.S Now" loading="lazy">
       </div>
     </div>
     <div class="founder-content gsap-fade">
@@ -854,37 +865,37 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
     </div>
     <div class="services-grid-6">
       <div class="svc-card gsap-fade" onclick="openSvc('cameras')">
-        <div class="svc-card-img"><img src="camera 2.jpeg" alt="Câmera de Segurança instalada" loading="lazy"></div>
+        <div class="svc-card-img"><img src="camera 2.webp" alt="Câmera de Segurança instalada" loading="lazy"></div>
         <div class="svc-num">01</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="svc-title">Câmera de Segurança</div></div>
         <div class="svc-body"><p class="svc-desc">Câmeras internas e externas com acesso remoto, visão noturna e gravação 24h em alta definição.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('cerca')">
-        <div class="svc-card-img"><img src="cerca1.jpeg" alt="Cerca Elétrica instalada" loading="lazy"></div>
+        <div class="svc-card-img"><img src="cerca1.webp" alt="Cerca Elétrica instalada" loading="lazy"></div>
         <div class="svc-num">02</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2v20M11 2v20"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="18" x2="20" y2="18"/></svg></div><div class="svc-title">Cerca Elétrica</div></div>
         <div class="svc-body"><p class="svc-desc">Proteção perimetral de alta performance para residências, condomínios e empresas.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('video')">
-        <div class="svc-card-img"><img src="videoporteiro.jpeg" alt="Vídeo Porteiro instalado" loading="lazy"></div>
+        <div class="svc-card-img"><img src="videoporteiro.webp" alt="Vídeo Porteiro instalado" loading="lazy"></div>
         <div class="svc-num">03</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.899L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div><div class="svc-title">Vídeo Porteiro</div></div>
         <div class="svc-body"><p class="svc-desc">Controle de acesso com vídeo porteiro, abertura remota pelo celular e registro de visitantes.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('alarme')">
-        <div class="svc-card-img"><img src="alarme1.jpeg" alt="Alarme instalado" loading="lazy"></div>
+        <div class="svc-card-img"><img src="alarme1.webp" alt="Alarme instalado" loading="lazy"></div>
         <div class="svc-num">04</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div><div class="svc-title">Alarme</div></div>
         <div class="svc-body"><p class="svc-desc">Sistemas monitorados 24h com sensores de movimento, abertura e fumaça. Sirene de alta potência.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('portao')">
-        <div class="svc-card-img"><img src="portao1.jpeg" alt="Automatização de Portão instalada" loading="lazy"></div>
+        <div class="svc-card-img"><img src="portao1.webp" alt="Automatização de Portão instalada" loading="lazy"></div>
         <div class="svc-num">05</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h6v8h-6"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="svc-title">Automatização de Portão e Travas Elétricas</div></div>
         <div class="svc-body"><p class="svc-desc">Motores Garen para portões deslizantes e basculantes, travas elétricas e controle remoto completo.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
       </div>
       <div class="svc-card gsap-fade" onclick="openSvc('acesso')">
-        <div class="svc-card-img"><img src="porteiro1.jpeg" alt="Controle de Acesso instalado" loading="lazy"></div>
+        <div class="svc-card-img"><img src="porteiro1.webp" alt="Controle de Acesso instalado" loading="lazy"></div>
         <div class="svc-num">06</div>
         <div class="svc-icon-area"><div class="svc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="svc-title">Controle de Acesso / Fechadura</div></div>
         <div class="svc-body"><p class="svc-desc">Fechaduras digitais, biometria, reconhecimento facial e cartões RFID para acesso inteligente.</p><div class="svc-btn">Ver projetos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
@@ -1011,7 +1022,7 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
       </div>
       <div class="client-logo-card gsap-fade">
         <div class="client-logo-img-wrap">
-          <img src="img/image-removebg-preview (3).png" alt="Logo Seu Dentista, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+          <img src="img/image-removebg-preview (3).webp" alt="Logo Seu Dentista, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
         </div>
         <div class="client-logo-name">Seu Dentista</div>
       </div>
@@ -1023,13 +1034,13 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
       </div>
       <div class="client-logo-card gsap-fade">
         <div class="client-logo-img-wrap">
-          <img src="img/339654111_772318961074927_2079262801274745262_n (1).jpg" alt="Logo Óleo Novo — Super Troca de Óleo, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+          <img src="img/339654111_772318961074927_2079262801274745262_n (1).webp" alt="Logo Óleo Novo — Super Troca de Óleo, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
         </div>
         <div class="client-logo-name">óleo novo</div>
       </div>
       <div class="client-logo-card gsap-fade">
         <div class="client-logo-img-wrap">
-          <img src="img/401922176_713785567281562_1065588810008170559_n.jpg" alt="Logo Tok Iluminar, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
+          <img src="img/401922176_713785567281562_1065588810008170559_n.webp" alt="Logo Tok Iluminar, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
         </div>
         <div class="client-logo-name">tok iluminar</div>
       </div>
@@ -1245,25 +1256,25 @@ const svcData = {
     title: 'Câmera de Segurança',
     desc: 'Instalação profissional de câmeras internas e externas Intelbras em Full HD e 4K. Monitore em tempo real pelo celular com visão noturna, detecção de movimento e gravação contínua.',
     items: [
-      { src:'camera 2.jpeg', label:'Câmeras Intelbras instaladas' },
-      { src:'camera 1.jpeg', label:'Câmera bullet dupla — portão' },
-      { src:'camera3.jpeg', label:'Câmera PTZ externa' },
-      { src:'camera4.jpeg', label:'TV com monitoramento 4 canais' },
-      { src:'camera 5.jpeg', label:'Câmera bullet preta — muro' },
-      { src:'camera 6.jpeg', label:'Câmeras Intelbras instaladas' },
-      { src:'camera7.jpeg', label:'Câmera bullet dupla — portão' },
-      { src:'camera8.jpeg', label:'Câmera PTZ externa' },
-      { src:'camera9.jpeg', label:'TV com monitoramento 4 canais' },
-      { src:'camera10.jpeg', label:'Câmera bullet preta — muro' },
+      { src:'camera 2.webp', label:'Câmeras Intelbras instaladas' },
+      { src:'camera 1.webp', label:'Câmera bullet dupla — portão' },
+      { src:'camera3.webp', label:'Câmera PTZ externa' },
+      { src:'camera4.webp', label:'TV com monitoramento 4 canais' },
+      { src:'camera 5.webp', label:'Câmera bullet preta — muro' },
+      { src:'camera 6.webp', label:'Câmeras Intelbras instaladas' },
+      { src:'camera7.webp', label:'Câmera bullet dupla — portão' },
+      { src:'camera8.webp', label:'Câmera PTZ externa' },
+      { src:'camera9.webp', label:'TV com monitoramento 4 canais' },
+      { src:'camera10.webp', label:'Câmera bullet preta — muro' },
     ]
   },
   cerca: {
     title: 'Cerca Elétrica',
     desc: 'Proteção perimetral eficiente para residências, condomínios e empresas. Central com alarme integrado, resistência a intempéries e equipamentos certificados.',
     items: [
-      { src:'cerca1.jpeg', label:'Cerca elétrica instalada — muro' },
-      { src:'cerca2.jpeg', label:'Central de cerca + sirene' },
-      { src:'cerca3.jpeg', label:'Central de cerca + sirene' },
+      { src:'cerca1.webp', label:'Cerca elétrica instalada — muro' },
+      { src:'cerca2.webp', label:'Central de cerca + sirene' },
+      { src:'cerca3.webp', label:'Central de cerca + sirene' },
       { src:'vc.mp4', label:'Cerca elétrica instalada — muro', isVideo: true },
   ]
   },
@@ -1271,43 +1282,43 @@ const svcData = {
     title: 'Vídeo Porteiro',
     desc: 'Controle o acesso com segurança. Veja e converse com visitantes, abra portões remotamente e registre todas as entradas, tudo pelo celular de qualquer lugar.',
     items: [
-      { src:'videoporteiro.jpeg', label:'Vídeo porteiro Intelbras — interno' },
-      { src:'videoporteiro2.jpeg', label:'Ramal externo Intelbras Allo' },
-      { src:'videroporteiro3.jpeg', label:'Funcionamento ao vivo',},
+      { src:'videoporteiro.webp', label:'Vídeo porteiro Intelbras — interno' },
+      { src:'videoporteiro2.webp', label:'Ramal externo Intelbras Allo' },
+      { src:'videroporteiro3.webp', label:'Funcionamento ao vivo',},
     ]
   },
   alarme: {
     title: 'Alarme',
     desc: 'Sistemas monitorados 24h com sensores de movimento, abertura de portas/janelas e detectores de fumaça. Notificação imediata no celular.',
     items: [
-      { src:'alarme1.jpeg', label:'Adicione foto', model:'Modelo aqui' },
-      { src:'alarme3.jpeg', label:'Adicione foto', model:'Modelo aqui' },
-      { src:'alarme2.jpeg', label:'Adicione foto', model:'Modelo aqui' },
-      { src:'alarmee.jpeg', label:'Adicione foto', model:'Modelo aqui' },
-      { src:'alarmeee.jpeg', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarme1.webp', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarme3.webp', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarme2.webp', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarmee.webp', label:'Adicione foto', model:'Modelo aqui' },
+      { src:'alarmeee.webp', label:'Adicione foto', model:'Modelo aqui' },
     ]
   },
   portao: {
     title: 'Automatização de Portão e Travas Elétricas',
     desc: 'Motores Garen de alta performance para portões deslizantes e basculantes, travas elétricas e controle remoto. Integração total com vídeo porteiro e câmeras.',
     items: [
-      { src:'portao1.jpeg', label:'Motor Garen instalado' },
-      { src:'portao2.jpeg', label:'Trava elétrica — portão deslizante' },
-      { src:'portao.jpeg', label:'Motor Garen instalado' },
-      { src:'portao3.jpeg', label:'Trava elétrica — portão deslizante' },
+      { src:'portao1.webp', label:'Motor Garen instalado' },
+      { src:'portao2.webp', label:'Trava elétrica — portão deslizante' },
+      { src:'portao.webp', label:'Motor Garen instalado' },
+      { src:'portao3.webp', label:'Trava elétrica — portão deslizante' },
     ]
   },
   acesso: {
     title: 'Controle de Acesso / Fechadura',
     desc: 'Fechaduras digitais, biometria, reconhecimento facial e cartões RFID. Controle múltiplos usuários, gere relatórios e gerencie tudo pelo celular.',
     items: [
-      { src:'porteiro1.jpeg', label:'Leitor de acesso externo' },
-      { src:'porteiro2.jpeg', label:'Trava de portão — Transvue' },
-      { src:'porteiro3.jpeg', label:'Câmera + leitor de acesso' },
-      { src:'porteiro4.jpeg', label:'Leitor de acesso externo' },
-      { src:'portyeiro5.jpeg', label:'Trava de portão — Transvue' },
-      { src:'porteiro6.jpeg', label:'Câmera + leitor de acesso' },
-       { src:'porteiro7.jpeg', label:'Leitor de acesso externo' },
+      { src:'porteiro1.webp', label:'Leitor de acesso externo' },
+      { src:'porteiro2.webp', label:'Trava de portão — Transvue' },
+      { src:'porteiro3.webp', label:'Câmera + leitor de acesso' },
+      { src:'porteiro4.webp', label:'Leitor de acesso externo' },
+      { src:'portyeiro5.webp', label:'Trava de portão — Transvue' },
+      { src:'porteiro6.webp', label:'Câmera + leitor de acesso' },
+       { src:'porteiro7.webp', label:'Leitor de acesso externo' },
       { src:'videop.mp4', label:'Trava de portão — Transvue' , isVideo: true},
       { src:'videopo.mp4', label:'Câmera + leitor de acesso' , isVideo: true},
     ]
@@ -1384,8 +1395,16 @@ function sendWhatsApp() {
 /* ══════════════════════════════════════════
    ANIMATIONS
    ══════════════════════════════════════════ */
-window.addEventListener('load', () => {
-  initAnimations();
+// Anima assim que o HTML estiver pronto (não espera todas as imagens)
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.gsap && window.ScrollTrigger) {
+    initAnimations();
+    window.addEventListener('load', () => ScrollTrigger.refresh());
+  } else {
+    // Se o GSAP não carregar, mostra o conteúdo sem animação
+    document.querySelectorAll('#heroLabel,#heroTitle,#heroSub,#heroActions,#heroCam,#scrollHint,.gsap-fade')
+      .forEach(el => { el.style.opacity = 1; });
+  }
 });
 
 function initAnimations() {

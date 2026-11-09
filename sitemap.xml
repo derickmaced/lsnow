@@ -6,4 +6,55 @@
     <image:image><image:loc>https://lsnowseguranca.com.br/van.jpeg</image:loc></image:image>
     <image:image><image:loc>https://lsnowseguranca.com.br/img/lazaro-fundador.png</image:loc></image:image>
   </url>
+  <url>
+    <loc>https://lsnowseguranca.com.br/cameras-de-seguranca/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <image:image><image:loc>https://lsnowseguranca.com.br/camera%202.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/camera%201.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/camera3.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/camera4.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/camera%205.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/camera%206.jpeg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://lsnowseguranca.com.br/cerca-eletrica/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <image:image><image:loc>https://lsnowseguranca.com.br/cerca1.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/cerca2.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/cerca3.jpeg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://lsnowseguranca.com.br/video-porteiro/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <image:image><image:loc>https://lsnowseguranca.com.br/videoporteiro.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/videoporteiro2.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/videroporteiro3.jpeg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://lsnowseguranca.com.br/alarmes/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <image:image><image:loc>https://lsnowseguranca.com.br/alarme1.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/alarme3.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/alarme2.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/alarmee.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/alarmeee.jpeg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://lsnowseguranca.com.br/automatizacao-de-portao/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <image:image><image:loc>https://lsnowseguranca.com.br/portao1.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/portao2.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/portao.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/portao3.jpeg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://lsnowseguranca.com.br/controle-de-acesso/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <image:image><image:loc>https://lsnowseguranca.com.br/porteiro1.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/porteiro2.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/porteiro3.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/porteiro4.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/porteiro6.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://lsnowseguranca.com.br/porteiro7.jpeg</image:loc></image:image>
+  </url>
 </urlset>

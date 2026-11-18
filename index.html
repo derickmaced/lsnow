@@ -243,12 +243,14 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .nav-ham span{width:22px;height:1.5px;background:var(--white);border-radius:2px;transition:all .3s;display:block;}
 
 /* ── HERO ── */
+.home-intro{background:var(--dark);}
 .hero{
   position:relative;height:100vh;min-height:700px;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  overflow:hidden;background:var(--black);
+  overflow:hidden;background:linear-gradient(to bottom,var(--black) 72%,transparent);
 }
+.hero-orbs,.hero-cam-wrap{mask-image:linear-gradient(to bottom,#000 68%,transparent);}
 .hero-orbs{position:absolute;inset:0;z-index:0;pointer-events:none;}
 .orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;}
 .orb1{width:600px;height:600px;background:radial-gradient(circle,#f5c400,transparent);top:-200px;left:-100px;}
@@ -264,10 +266,6 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .hero-cam-wrap::before{
   content:'';position:absolute;inset:0;z-index:2;
   background:linear-gradient(90deg,var(--black) 0%,rgba(13,13,13,.8) 20%,rgba(13,13,13,.25) 55%,transparent 100%);
-}
-.hero-cam-wrap::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:32%;z-index:3;
-  background:linear-gradient(to top,var(--black),transparent);
 }
 .hero-van-img{
   position:absolute;inset:0;width:100%;height:100%;
@@ -495,17 +493,14 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 
 /* ── CLIENTS ── */
 .clients-section{
-  background:radial-gradient(ellipse at 50% 0,rgba(245,196,0,.055),transparent 65%),var(--black);
-  color:var(--white);padding:clamp(38px,5vw,68px) 0 30px;scroll-margin-top:76px;
+  color:var(--white);padding:clamp(24px,3vw,42px) 0 12px;scroll-margin-top:76px;
 }
-.clients-header{text-align:center;margin-bottom:22px;}
-.clients-header h2{font-size:clamp(1.5rem,3vw,2.3rem);line-height:1.15;font-weight:700;letter-spacing:-.035em;}
-.clients-header h2 span{display:block;color:var(--light);font-weight:500;}
+.clients-header{text-align:center;margin-bottom:12px;}
+.clients-header h2{font-size:clamp(1.1rem,2vw,1.65rem);line-height:1.2;font-weight:600;letter-spacing:-.025em;}
 .clients-slider{
   width:100%;overflow-x:auto;mix-blend-mode:screen;
   mask-image:linear-gradient(to right,transparent,#000 clamp(16px,5vw,80px),#000 calc(100% - clamp(16px,5vw,80px)),transparent);
 }
-.clients-rule{width:100%;height:1px;margin-inline:auto;background:linear-gradient(90deg,transparent,var(--gray),transparent);}
 .clients-track{display:flex;width:max-content;align-items:center;}
 .clients-logos{display:flex;flex:none;min-width:100vw;align-items:center;justify-content:space-around;gap:clamp(20px,3vw,40px);list-style:none;padding:10px clamp(10px,1.5vw,20px);}
 .clients-logos li{flex:none;width:clamp(90px,10vw,120px);height:66px;display:grid;place-items:center;overflow:hidden;}
@@ -808,6 +803,7 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 </div>
 
 <!-- ══ HERO ══ -->
+<div class="home-intro">
 <section class="hero" id="inicio">
   <div class="hero-orbs">
     <div class="orb orb1"></div>
@@ -846,9 +842,8 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 <!-- ══ CLIENTS ══ -->
 <section class="clients-section" id="clientes" aria-labelledby="clientes-titulo">
   <div class="clients-header container">
-    <h2 id="clientes-titulo"><span>Empresas que confiam</span>na L.S Now.</h2>
+    <h2 id="clientes-titulo">Empresas que confiam na L.S Now</h2>
   </div>
-  <div class="clients-rule" aria-hidden="true"></div>
   <div class="clients-slider">
     <div class="clients-track">
       <ul class="clients-logos" role="list">
@@ -864,7 +859,6 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
       </ul>
     </div>
   </div>
-  <div class="clients-rule" aria-hidden="true"></div>
 </section>
 <script>
   (() => {
@@ -879,7 +873,7 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 </script>
 
 <!-- ══ STORY ══ -->
-<section class="section section-dark founder-section" id="sobre">
+<section class="section founder-section" id="sobre">
   <div class="container founder-wrap">
     <div class="founder-photo-wrap gsap-fade">
       <div class="founder-photo-card">
@@ -904,6 +898,8 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
     </div>
   </div>
 </section>
+
+</div>
 
 <!-- ══ SERVICES ══ -->
 <section class="section services-section" id="servicos">

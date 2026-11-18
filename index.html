@@ -413,33 +413,36 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .svc-btn:hover{background:rgba(245,196,0,.16);gap:10px;}
 
 /* ── TRABALHOS RECENTES (fotos passando) ── */
-.works-section{background:var(--dark2);padding:0 0 110px;position:relative;overflow:hidden;}
+.works-section{--works-gap:14px;background:var(--dark2);padding:0 0 110px;position:relative;overflow:hidden;}
 .works-section::before{content:'';position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:min(1100px,120vw);height:420px;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(245,196,0,.07),transparent 70%);pointer-events:none;}
 .works-header{text-align:center;margin-bottom:44px;position:relative;}
-.works-live{display:inline-flex;align-items:center;gap:8px;}
-.works-live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(245,196,0,.6);animation:works-pulse 2s ease-out infinite;}
-@keyframes works-pulse{70%{box-shadow:0 0 0 8px rgba(245,196,0,0);}100%{box-shadow:0 0 0 0 rgba(245,196,0,0);}}
-.works-rows{display:flex;flex-direction:column;gap:14px;position:relative;}
-.works-row{width:100%;overflow:hidden;mask-image:linear-gradient(to right,transparent,#000 clamp(24px,8vw,140px),#000 calc(100% - clamp(24px,8vw,140px)),transparent);}
-.works-track{display:flex;gap:14px;width:max-content;animation:works-slide var(--works-dur,60s) linear infinite;}
+.works-rows{display:flex;flex-direction:column;gap:var(--works-gap);position:relative;}
+.works-row{width:100%;overflow:hidden;mask-image:linear-gradient(to right,transparent,#000 clamp(24px,8vw,140px),#000 calc(100% - clamp(24px,8vw,140px)),transparent);-webkit-mask-image:linear-gradient(to right,transparent,#000 clamp(24px,8vw,140px),#000 calc(100% - clamp(24px,8vw,140px)),transparent);}
+.works-track{display:flex;gap:var(--works-gap);width:max-content;animation:works-slide var(--works-dur,60s) linear infinite;will-change:transform;}
 .works-row.reverse .works-track{animation-direction:reverse;}
-.works-row:hover .works-track{animation-play-state:paused;}
-@keyframes works-slide{to{transform:translateX(calc(-50% - 7px));}}
-.work-card{flex:none;position:relative;height:clamp(210px,24vw,300px);aspect-ratio:3/4;border-radius:16px;overflow:hidden;border:1px solid var(--gray);background:var(--dark3);cursor:zoom-in;padding:0;font:inherit;color:inherit;transition:border-color .3s;}
+@keyframes works-slide{to{transform:translate3d(calc(-50% - var(--works-gap) / 2),0,0);}}
+.work-card{flex:none;position:relative;height:clamp(200px,24vw,300px);aspect-ratio:3/4;border-radius:16px;overflow:hidden;border:1px solid var(--gray);background:var(--dark3);cursor:zoom-in;padding:0;margin:0;font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;transition:border-color .3s;}
 .work-card.wide{aspect-ratio:4/3;}
-.work-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
-.work-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,13,.82) 0%,rgba(13,13,13,0) 45%);pointer-events:none;}
-.work-card:hover{border-color:rgba(245,196,0,.45);}
-.work-card:hover img{transform:scale(1.06);}
+.work-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;-webkit-user-drag:none;user-select:none;}
 .work-card:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
-.work-chip{position:absolute;left:12px;bottom:12px;z-index:1;font-size:.66rem;font-weight:700;letter-spacing:.04em;color:var(--gold);background:rgba(13,13,13,.62);backdrop-filter:blur(8px);border:1px solid rgba(245,196,0,.25);border-radius:50px;padding:5px 11px;white-space:nowrap;}
+@media (hover:hover){
+  .works-row:hover .works-track{animation-play-state:paused;}
+  .work-card:hover{border-color:rgba(245,196,0,.45);}
+  .work-card:hover img{transform:scale(1.06);}
+}
 .works-cta{display:flex;justify-content:center;margin-top:44px;position:relative;}
 @media (prefers-reduced-motion:reduce){
-  .works-row{overflow-x:auto;mask-image:none;}
+  .works-row{overflow-x:auto;mask-image:none;-webkit-mask-image:none;}
   .works-track{animation:none;}
   .work-card[aria-hidden="true"]{display:none;}
 }
-@media(max-width:600px){.works-section{padding-bottom:80px;}.works-rows{gap:10px;}.works-track{gap:10px;}.work-chip{font-size:.6rem;padding:4px 9px;left:10px;bottom:10px;}}
+@media(max-width:600px){
+  .works-section{--works-gap:10px;padding-bottom:80px;}
+  .works-header{margin-bottom:32px;}
+  .works-header .headline{font-size:clamp(1.75rem,8vw,2.2rem);}
+  .work-card{height:190px;border-radius:12px;}
+  .works-cta{margin-top:32px;padding:0 20px;}
+}
 
 /* ── SERVICE MODAL ── */
 .svc-modal-overlay{position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.88);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
@@ -982,7 +985,7 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 <!-- ══ TRABALHOS RECENTES ══ -->
 <section class="works-section" id="trabalhos" aria-labelledby="trabalhos-titulo">
   <div class="container works-header gsap-fade">
-    <div class="tag works-live">Trabalhos recentes</div>
+    <div class="tag">Trabalhos recentes</div>
     <h2 class="headline" id="trabalhos-titulo" style="text-align:center;">Instalações <em>reais</em>,<br>feitas pela nossa equipe.</h2>
     <p class="subtext" style="text-align:center;margin:12px auto 0;max-width:500px;">Câmeras, cercas, portões e controle de acesso instalados em Alphaville, Barueri, Santana de Parnaíba e Cajamar.</p>
   </div>
@@ -1023,9 +1026,9 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
       const img = new Image();
       img.src = src; img.alt = hidden ? '' : `${label} instalado pela L.S Now`;
       img.loading = 'lazy'; img.decoding = 'async';
-      const chip = document.createElement('span');
-      chip.className = 'work-chip'; chip.textContent = label;
-      b.append(img, chip);
+      img.draggable = false;
+      b.setAttribute('aria-label', `Ampliar foto: ${label}`);
+      b.append(img);
       return b;
     };
     document.querySelectorAll('#trabalhos .works-track').forEach(track => {
@@ -1437,8 +1440,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSvc()
 function openLightbox(src) {
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightboxOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
-function closeLightbox() { document.getElementById('lightboxOverlay').classList.remove('open'); }
+function closeLightbox() {
+  document.getElementById('lightboxOverlay').classList.remove('open');
+  // só libera a rolagem se o modal de serviço não estiver aberto por trás
+  if (!document.getElementById('svcModalOverlay').classList.contains('open')) document.body.style.overflow = '';
+}
 function closeLightboxOutside(e) { if (e.target.id === 'lightboxOverlay') closeLightbox(); }
 
 /* ══════════════════════════════════════════

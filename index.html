@@ -412,30 +412,55 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .svc-btn{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;color:var(--gold);background:rgba(245,196,0,.08);border:1px solid rgba(245,196,0,.2);border-radius:50px;padding:7px 14px;transition:all .2s;cursor:pointer;}
 .svc-btn:hover{background:rgba(245,196,0,.16);gap:10px;}
 
-/* ── TRABALHOS RECENTES (mosaico com fotos trocando) ── */
-.works-section{background:var(--dark2);padding:0 0 110px;position:relative;overflow:hidden;}
-.works-section::before{content:'';position:absolute;left:50%;top:55%;transform:translate(-50%,-50%);width:min(1100px,120vw);height:520px;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(245,196,0,.06),transparent 70%);pointer-events:none;}
-.works-header{text-align:center;margin-bottom:44px;position:relative;}
-.works-grid{position:relative;display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:repeat(2,clamp(190px,22vw,260px));gap:14px;}
-.work-tile{position:relative;overflow:hidden;border-radius:18px;border:1px solid var(--gray);background:var(--dark3);cursor:zoom-in;padding:0;margin:0;font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;transition:border-color .3s;}
-.work-tile.big{grid-row:span 2;}
-.work-tile.wide{grid-column:span 2;}
-.work-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transform:scale(1.08);transition:opacity 1.2s ease,transform 6s ease-out;-webkit-user-drag:none;user-select:none;}
-.work-tile img.on{opacity:1;transform:scale(1);}
-.work-tile::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);pointer-events:none;}
-.work-tile:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
-@media (hover:hover){.work-tile:hover{border-color:rgba(245,196,0,.45);}}
-.works-cta{display:flex;justify-content:center;margin-top:44px;position:relative;}
-@media (prefers-reduced-motion:reduce){.work-tile img{transition:none;transform:none;}}
+/* ── TRABALHOS RECENTES (vitrine de fotos) ── */
+.works-cta-m{display:none;justify-content:center;margin-top:40px;}
+.works-section{background:var(--dark2);padding:10px 0 120px;position:relative;overflow:hidden;}
+.works-wrap{display:grid;grid-template-columns:1fr 1.05fr;gap:72px;align-items:center;}
+.works-text .headline{font-size:clamp(2rem,3.5vw,3rem);}
+.works-text .subtext{margin-top:16px;}
+.works-nav{display:flex;align-items:center;gap:18px;margin:34px 0 36px;}
+.works-count{font-size:.85rem;font-weight:600;letter-spacing:.08em;color:var(--light);font-variant-numeric:tabular-nums;min-width:62px;}
+.works-count b{color:var(--gold);font-weight:800;font-size:1.25rem;letter-spacing:-.02em;}
+.works-arrows{display:flex;gap:10px;}
+.works-arrow{width:46px;height:46px;border-radius:50%;background:transparent;border:1px solid var(--gray);color:var(--white);display:grid;place-items:center;cursor:pointer;transition:border-color .2s,background .2s,color .2s;-webkit-tap-highlight-color:transparent;}
+.works-arrow:hover{border-color:var(--gold);color:var(--gold);background:rgba(245,196,0,.06);}
+.works-arrow:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.works-stage{position:relative;aspect-ratio:1/1;max-width:520px;width:100%;margin-left:auto;}
+.works-stage::before,.works-stage::after{content:'';position:absolute;inset:0;border-radius:24px;border:1px solid var(--gray);background:var(--dark3);}
+.works-stage::before{transform:rotate(-5deg) translate(-14px,10px);opacity:.55;}
+.works-stage::after{transform:rotate(3deg) translate(12px,6px);opacity:.8;}
+.works-glow{position:absolute;inset:-12%;background:radial-gradient(circle at 50% 50%,rgba(245,196,0,.12),transparent 62%);pointer-events:none;}
+.works-photo{position:absolute;inset:0;z-index:2;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:var(--dark3);box-shadow:0 30px 70px rgba(0,0,0,.5);cursor:zoom-in;padding:0;margin:0;-webkit-tap-highlight-color:transparent;}
+.works-photo:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+.works-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transform:scale(1.07);transition:opacity .9s ease,transform 6.5s ease-out;-webkit-user-drag:none;user-select:none;}
+.works-photo img.on{opacity:1;transform:scale(1);}
+.works-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,13,13,.45),transparent 22%);pointer-events:none;z-index:1;}
+.works-bars{position:absolute;top:14px;left:14px;right:14px;z-index:3;display:flex;gap:4px;pointer-events:none;}
+.works-bars span{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.25);overflow:hidden;}
+.works-bars span::after{content:'';display:block;height:100%;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:left;}
+.works-bars span.done::after{transform:scaleX(1);}
+.works-bars span.now::after{animation:works-fill var(--works-step,4.5s) linear forwards;}
+.works-stage.paused .works-bars span.now::after{animation-play-state:paused;}
+@keyframes works-fill{to{transform:scaleX(1);}}
+@media (prefers-reduced-motion:reduce){.works-photo img{transition:opacity .2s;transform:none;}.works-bars span.now::after{animation:none;transform:scaleX(1);}}
+@media(max-width:960px){
+  .works-wrap{grid-template-columns:1fr;gap:44px;}
+  .works-text{text-align:center;}
+  .works-text .subtext{margin-left:auto;margin-right:auto;}
+  .works-nav{justify-content:center;margin:26px 0 0;}
+  .works-text .btn-gold{display:none;}
+  .works-stage{margin:0 auto;max-width:460px;}
+  .works-cta-m{display:flex;}
+}
 @media(max-width:600px){
-  .works-section{padding-bottom:80px;}
-  .works-header{margin-bottom:32px;}
-  .works-header .headline{font-size:clamp(1.75rem,8vw,2.2rem);}
-  .works-grid{grid-template-columns:1fr 1fr;grid-template-rows:none;grid-auto-rows:auto;gap:10px;}
-  .work-tile{border-radius:14px;aspect-ratio:1/1;}
-  .work-tile.big{grid-row:auto;grid-column:span 2;aspect-ratio:4/3;}
-  .work-tile.wide{aspect-ratio:16/9;}
-  .works-cta{margin-top:32px;padding:0 20px;}
+  .works-section{padding:0 0 80px;}
+  .works-text .headline{font-size:clamp(1.75rem,8vw,2.2rem);}
+  .works-stage{max-width:none;width:calc(100% - 16px);}
+  .works-stage::before{transform:rotate(-4deg) translate(-8px,8px);}
+  .works-stage::after{transform:rotate(2.5deg) translate(8px,5px);}
+  .works-photo,.works-stage::before,.works-stage::after{border-radius:18px;}
+  .works-arrow{width:42px;height:42px;}
+  .works-cta-m{margin-top:34px;}
 }
 
 /* ── SERVICE MODAL ── */
@@ -978,69 +1003,87 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 
 <!-- ══ TRABALHOS RECENTES ══ -->
 <section class="works-section" id="trabalhos" aria-labelledby="trabalhos-titulo">
-  <div class="container works-header gsap-fade">
-    <div class="tag">Trabalhos recentes</div>
-    <h2 class="headline" id="trabalhos-titulo" style="text-align:center;">Instalações <em>reais</em>,<br>feitas pela nossa equipe.</h2>
-    <p class="subtext" style="text-align:center;margin:12px auto 0;max-width:500px;">Câmeras, cercas, portões e controle de acesso instalados em Alphaville, Barueri, Santana de Parnaíba e Cajamar.</p>
-  </div>
-  <div class="container">
-    <div class="works-grid gsap-fade" id="worksGrid">
-      <button type="button" class="work-tile big" data-pool="0"></button>
-      <button type="button" class="work-tile" data-pool="1"></button>
-      <button type="button" class="work-tile" data-pool="2"></button>
-      <button type="button" class="work-tile wide" data-pool="3"></button>
+  <div class="container works-wrap">
+    <div class="works-text gsap-fade">
+      <div class="tag">Trabalhos recentes</div>
+      <h2 class="headline" id="trabalhos-titulo">Instalações <em>reais</em> da nossa equipe.</h2>
+      <p class="subtext">Cada foto é de um cliente nosso em Alphaville e região, com acabamento caprichado e equipamento Intelbras.</p>
+      <div class="works-nav">
+        <div class="works-count" id="worksCount" aria-live="polite"><b>01</b> / 15</div>
+        <div class="works-arrows">
+          <button type="button" class="works-arrow" id="worksPrev" aria-label="Foto anterior"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+          <button type="button" class="works-arrow" id="worksNext" aria-label="Próxima foto"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+      <a href="https://wa.me/5511957696353?text=Ol%C3%A1!%20Vi%20os%20trabalhos%20no%20site%20da%20L.S%20Now%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn-gold" onclick="gtag_report_conversion();">Quero um orçamento <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+    <div class="works-stage gsap-fade" id="worksStage">
+      <div class="works-glow"></div>
+      <button type="button" class="works-photo" id="worksPhoto" aria-label="Ampliar foto da instalação"></button>
+      <div class="works-bars" id="worksBars"></div>
     </div>
   </div>
-  <div class="works-cta gsap-fade">
-    <a href="https://wa.me/5511957696353?text=Ol%C3%A1!%20Vi%20os%20trabalhos%20no%20site%20da%20L.S%20Now%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn-gold" onclick="gtag_report_conversion();">
-      Quero um orçamento
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-  </div>
+  <div class="works-cta-m"><a href="https://wa.me/5511957696353?text=Ol%C3%A1!%20Vi%20os%20trabalhos%20no%20site%20da%20L.S%20Now%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn-gold" onclick="gtag_report_conversion();">Quero um orçamento <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
 </section>
 <script>
   (() => {
-    // Fotos de cada quadro do mosaico — para adicionar fotos novas, é só incluir o arquivo na lista.
-    const pools = [
-      ['camera 2.webp','cerca2.webp','portao1.webp','porteiro6.webp','alarme2.webp','camera4.webp','videoporteiro2.webp','portyeiro5.webp','cerca3.webp','porteiro7.webp'],
-      ['camera 1.webp','cerca1.webp','alarme1.webp','camera 6.webp','camera9.webp'],
-      ['camera3.webp','portao.webp','alarmee.webp','camera10.webp','camera8.webp'],
-      ['camera 5.webp','videoporteiro.webp','camera9.webp','cerca1.webp','camera 6.webp','camera3.webp'],
-    ];
-    const tiles = [...document.querySelectorAll('#worksGrid .work-tile')];
-    const pos = tiles.map(() => 0);
-    const show = (i, src, first) => {
-      const t = tiles[i];
-      const img = new Image();
-      img.alt = 'Instalação realizada pela L.S Now';
-      img.decoding = 'async'; img.draggable = false;
-      img.src = src;
+    // As melhores fotos, na ordem em que aparecem. Para trocar, é só editar a lista.
+    const photos = ['camera4.webp','cerca1.webp','camera8.webp','porteiro1.webp','camera 1.webp','cerca3.webp','camera3.webp',
+      'porteiro7.webp','camera 2.webp','porteiro6.webp','cerca2.webp','camera9.webp','portyeiro5.webp','portao2.webp','videoporteiro.webp'];
+    const STEP = 4500;
+    const stage = document.getElementById('worksStage'), box = document.getElementById('worksPhoto');
+    const bars = document.getElementById('worksBars'), count = document.getElementById('worksCount');
+    const pad = n => String(n).padStart(2, '0');
+    stage.style.setProperty('--works-step', STEP + 'ms');
+    bars.innerHTML = photos.map(() => '<span></span>').join('');
+    count.innerHTML = '<b>01</b> / ' + pad(photos.length);
+    let cur = -1, timer = null, visible = false, hover = false, seq = 0;
+    const preload = i => { const im = new Image(); im.src = photos[i]; };
+    const go = i => {
+      cur = (i + photos.length) % photos.length;
+      const my = ++seq, img = new Image();
+      img.alt = 'Instalação realizada pela L.S Now'; img.decoding = 'async'; img.draggable = false; img.src = photos[cur];
       const swap = () => {
-        t.append(img);
+        if (my !== seq) return;
+        box.append(img);
         requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('on')));
-        const old = [...t.querySelectorAll('img')].slice(0, -1);
-        setTimeout(() => old.forEach(o => o.remove()), 1300);
-        t.dataset.src = src;
+        const old = [...box.querySelectorAll('img')].slice(0, -1);
+        setTimeout(() => old.forEach(o => o.remove()), 950);
       };
-      first ? swap() : (img.decode ? img.decode().then(swap, swap) : (img.onload = swap));
+      img.decode ? img.decode().then(swap, swap) : swap();
+      [...bars.children].forEach((b, k) => { b.className = k < cur ? 'done' : ''; });
+      const now = bars.children[cur]; void now.offsetWidth; now.className = 'now';
+      count.innerHTML = '<b>' + pad(cur + 1) + '</b> / ' + pad(photos.length);
+      preload((cur + 1) % photos.length);
+      schedule();
     };
-    tiles.forEach((t, i) => {
-      t.setAttribute('aria-label', 'Ampliar foto da instalação');
-      t.onclick = () => openLightbox(t.dataset.src);
-      show(i, pools[i][0], true);
+    const running = () => visible && !hover && !document.hidden && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let left = STEP, started = 0;
+    const schedule = () => { clearTimeout(timer); left = STEP; resume(); };
+    const resume = () => {
+      clearTimeout(timer); stage.classList.toggle('paused', !running());
+      if (!running()) return;
+      started = Date.now(); timer = setTimeout(() => go(cur + 1), left);
+    };
+    const pause = () => { if (timer && !stage.classList.contains('paused')) left = Math.max(0, left - (Date.now() - started)); clearTimeout(timer); timer = null; stage.classList.add('paused'); };
+    const update = () => running() ? resume() : pause();
+    box.onclick = () => openLightbox(photos[cur]);
+    document.getElementById('worksPrev').onclick = () => go(cur - 1);
+    document.getElementById('worksNext').onclick = () => go(cur + 1);
+    if (matchMedia('(hover: hover)').matches) {
+      stage.addEventListener('mouseenter', () => { hover = true; update(); });
+      stage.addEventListener('mouseleave', () => { hover = false; update(); });
+    }
+    // arrastar para o lado no celular
+    let x0 = null;
+    box.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', e => {
+      if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) { e.preventDefault(); go(cur + (dx < 0 ? 1 : -1)); }
     });
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    let visible = false, turn = 0;
-    new IntersectionObserver(e => { visible = e[0].isIntersecting; }, { threshold: .2 }).observe(document.getElementById('worksGrid'));
-    const order = [1, 3, 0, 2];   // troca um quadro por vez, em sequência variada
-    setInterval(() => {
-      if (!visible || document.hidden) return;
-      const i = order[turn++ % order.length];
-      const onScreen = tiles.map(t => t.dataset.src);
-      let n = 0;
-      do { pos[i] = (pos[i] + 1) % pools[i].length; n++; } while (onScreen.includes(pools[i][pos[i]]) && n < pools[i].length);
-      show(i, pools[i][pos[i]], false);
-    }, 2600);
+    document.addEventListener('visibilitychange', update);
+    new IntersectionObserver(e => { visible = e[0].isIntersecting; update(); }, { threshold: .35 }).observe(stage);
+    go(0);
   })();
 </script>
 

@@ -412,35 +412,29 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .svc-btn{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;color:var(--gold);background:rgba(245,196,0,.08);border:1px solid rgba(245,196,0,.2);border-radius:50px;padding:7px 14px;transition:all .2s;cursor:pointer;}
 .svc-btn:hover{background:rgba(245,196,0,.16);gap:10px;}
 
-/* ── TRABALHOS RECENTES (fotos passando) ── */
-.works-section{--works-gap:14px;background:var(--dark2);padding:0 0 110px;position:relative;overflow:hidden;}
-.works-section::before{content:'';position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:min(1100px,120vw);height:420px;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(245,196,0,.07),transparent 70%);pointer-events:none;}
+/* ── TRABALHOS RECENTES (mosaico com fotos trocando) ── */
+.works-section{background:var(--dark2);padding:0 0 110px;position:relative;overflow:hidden;}
+.works-section::before{content:'';position:absolute;left:50%;top:55%;transform:translate(-50%,-50%);width:min(1100px,120vw);height:520px;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(245,196,0,.06),transparent 70%);pointer-events:none;}
 .works-header{text-align:center;margin-bottom:44px;position:relative;}
-.works-rows{display:flex;flex-direction:column;gap:var(--works-gap);position:relative;}
-.works-row{width:100%;overflow:hidden;mask-image:linear-gradient(to right,transparent,#000 clamp(24px,8vw,140px),#000 calc(100% - clamp(24px,8vw,140px)),transparent);-webkit-mask-image:linear-gradient(to right,transparent,#000 clamp(24px,8vw,140px),#000 calc(100% - clamp(24px,8vw,140px)),transparent);}
-.works-track{display:flex;gap:var(--works-gap);width:max-content;animation:works-slide var(--works-dur,60s) linear infinite;will-change:transform;}
-.works-row.reverse .works-track{animation-direction:reverse;}
-@keyframes works-slide{to{transform:translate3d(calc(-50% - var(--works-gap) / 2),0,0);}}
-.work-card{flex:none;position:relative;height:clamp(200px,24vw,300px);aspect-ratio:3/4;border-radius:16px;overflow:hidden;border:1px solid var(--gray);background:var(--dark3);cursor:zoom-in;padding:0;margin:0;font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;transition:border-color .3s;}
-.work-card.wide{aspect-ratio:4/3;}
-.work-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;-webkit-user-drag:none;user-select:none;}
-.work-card:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
-@media (hover:hover){
-  .works-row:hover .works-track{animation-play-state:paused;}
-  .work-card:hover{border-color:rgba(245,196,0,.45);}
-  .work-card:hover img{transform:scale(1.06);}
-}
+.works-grid{position:relative;display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:repeat(2,clamp(190px,22vw,260px));gap:14px;}
+.work-tile{position:relative;overflow:hidden;border-radius:18px;border:1px solid var(--gray);background:var(--dark3);cursor:zoom-in;padding:0;margin:0;font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;transition:border-color .3s;}
+.work-tile.big{grid-row:span 2;}
+.work-tile.wide{grid-column:span 2;}
+.work-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transform:scale(1.08);transition:opacity 1.2s ease,transform 6s ease-out;-webkit-user-drag:none;user-select:none;}
+.work-tile img.on{opacity:1;transform:scale(1);}
+.work-tile::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);pointer-events:none;}
+.work-tile:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+@media (hover:hover){.work-tile:hover{border-color:rgba(245,196,0,.45);}}
 .works-cta{display:flex;justify-content:center;margin-top:44px;position:relative;}
-@media (prefers-reduced-motion:reduce){
-  .works-row{overflow-x:auto;mask-image:none;-webkit-mask-image:none;}
-  .works-track{animation:none;}
-  .work-card[aria-hidden="true"]{display:none;}
-}
+@media (prefers-reduced-motion:reduce){.work-tile img{transition:none;transform:none;}}
 @media(max-width:600px){
-  .works-section{--works-gap:10px;padding-bottom:80px;}
+  .works-section{padding-bottom:80px;}
   .works-header{margin-bottom:32px;}
   .works-header .headline{font-size:clamp(1.75rem,8vw,2.2rem);}
-  .work-card{height:190px;border-radius:12px;}
+  .works-grid{grid-template-columns:1fr 1fr;grid-template-rows:none;grid-auto-rows:auto;gap:10px;}
+  .work-tile{border-radius:14px;aspect-ratio:1/1;}
+  .work-tile.big{grid-row:auto;grid-column:span 2;aspect-ratio:4/3;}
+  .work-tile.wide{aspect-ratio:16/9;}
   .works-cta{margin-top:32px;padding:0 20px;}
 }
 
@@ -989,9 +983,13 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
     <h2 class="headline" id="trabalhos-titulo" style="text-align:center;">Instalações <em>reais</em>,<br>feitas pela nossa equipe.</h2>
     <p class="subtext" style="text-align:center;margin:12px auto 0;max-width:500px;">Câmeras, cercas, portões e controle de acesso instalados em Alphaville, Barueri, Santana de Parnaíba e Cajamar.</p>
   </div>
-  <div class="works-rows">
-    <div class="works-row"><div class="works-track" data-row="0"></div></div>
-    <div class="works-row reverse"><div class="works-track" data-row="1"></div></div>
+  <div class="container">
+    <div class="works-grid gsap-fade" id="worksGrid">
+      <button type="button" class="work-tile big" data-pool="0"></button>
+      <button type="button" class="work-tile" data-pool="1"></button>
+      <button type="button" class="work-tile" data-pool="2"></button>
+      <button type="button" class="work-tile wide" data-pool="3"></button>
+    </div>
   </div>
   <div class="works-cta gsap-fade">
     <a href="https://wa.me/5511957696353?text=Ol%C3%A1!%20Vi%20os%20trabalhos%20no%20site%20da%20L.S%20Now%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn-gold" onclick="gtag_report_conversion();">
@@ -1002,41 +1000,47 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
 </section>
 <script>
   (() => {
-    // [arquivo, serviço, foto deitada?] — para adicionar fotos novas, é só incluir uma linha aqui
-    const rows = [
-      [
-        ['camera 1.webp','Câmera de Segurança',1], ['cerca2.webp','Cerca Elétrica',0], ['portao.webp','Automatização de Portão',1],
-        ['porteiro6.webp','Controle de Acesso',0], ['camera3.webp','Câmera de Segurança',1], ['alarme2.webp','Alarme',0],
-        ['videoporteiro.webp','Vídeo Porteiro',1], ['camera4.webp','Câmera de Segurança',0], ['cerca1.webp','Cerca Elétrica',1],
-        ['portyeiro5.webp','Controle de Acesso',0], ['camera9.webp','Câmera de Segurança',1],
-      ],
-      [
-        ['alarme1.webp','Alarme',1], ['portao1.webp','Automatização de Portão',0], ['camera 5.webp','Câmera de Segurança',1],
-        ['videoporteiro2.webp','Vídeo Porteiro',0], ['camera 6.webp','Câmera de Segurança',1], ['cerca3.webp','Cerca Elétrica',0],
-        ['alarmee.webp','Alarme',1], ['porteiro7.webp','Controle de Acesso',0], ['camera10.webp','Câmera de Segurança',1],
-        ['camera 2.webp','Câmera de Segurança',0], ['camera8.webp','Câmera de Segurança',1],
-      ],
+    // Fotos de cada quadro do mosaico — para adicionar fotos novas, é só incluir o arquivo na lista.
+    const pools = [
+      ['camera 2.webp','cerca2.webp','portao1.webp','porteiro6.webp','alarme2.webp','camera4.webp','videoporteiro2.webp','portyeiro5.webp','cerca3.webp','porteiro7.webp'],
+      ['camera 1.webp','cerca1.webp','alarme1.webp','camera 6.webp','camera9.webp'],
+      ['camera3.webp','portao.webp','alarmee.webp','camera10.webp','camera8.webp'],
+      ['camera 5.webp','videoporteiro.webp','camera9.webp','cerca1.webp','camera 6.webp','camera3.webp'],
     ];
-    const card = ([src, label, wide], hidden) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'work-card' + (wide ? ' wide' : '');
-      if (hidden) { b.setAttribute('aria-hidden', 'true'); b.tabIndex = -1; }
-      b.onclick = () => openLightbox(src);
+    const tiles = [...document.querySelectorAll('#worksGrid .work-tile')];
+    const pos = tiles.map(() => 0);
+    const show = (i, src, first) => {
+      const t = tiles[i];
       const img = new Image();
-      img.src = src; img.alt = hidden ? '' : `${label} instalado pela L.S Now`;
-      img.loading = 'lazy'; img.decoding = 'async';
-      img.draggable = false;
-      b.setAttribute('aria-label', `Ampliar foto: ${label}`);
-      b.append(img);
-      return b;
+      img.alt = 'Instalação realizada pela L.S Now';
+      img.decoding = 'async'; img.draggable = false;
+      img.src = src;
+      const swap = () => {
+        t.append(img);
+        requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('on')));
+        const old = [...t.querySelectorAll('img')].slice(0, -1);
+        setTimeout(() => old.forEach(o => o.remove()), 1300);
+        t.dataset.src = src;
+      };
+      first ? swap() : (img.decode ? img.decode().then(swap, swap) : (img.onload = swap));
     };
-    document.querySelectorAll('#trabalhos .works-track').forEach(track => {
-      const items = rows[track.dataset.row];
-      items.forEach(i => track.append(card(i, false)));
-      items.forEach(i => track.append(card(i, true)));   // cópia para o loop infinito
-      track.style.setProperty('--works-dur', `${items.length * 6}s`);
+    tiles.forEach((t, i) => {
+      t.setAttribute('aria-label', 'Ampliar foto da instalação');
+      t.onclick = () => openLightbox(t.dataset.src);
+      show(i, pools[i][0], true);
     });
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let visible = false, turn = 0;
+    new IntersectionObserver(e => { visible = e[0].isIntersecting; }, { threshold: .2 }).observe(document.getElementById('worksGrid'));
+    const order = [1, 3, 0, 2];   // troca um quadro por vez, em sequência variada
+    setInterval(() => {
+      if (!visible || document.hidden) return;
+      const i = order[turn++ % order.length];
+      const onScreen = tiles.map(t => t.dataset.src);
+      let n = 0;
+      do { pos[i] = (pos[i] + 1) % pools[i].length; n++; } while (onScreen.includes(pools[i][pos[i]]) && n < pools[i].length);
+      show(i, pools[i][pos[i]], false);
+    }, 2600);
   })();
 </script>
 

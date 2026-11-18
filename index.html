@@ -412,6 +412,35 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .svc-btn{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;color:var(--gold);background:rgba(245,196,0,.08);border:1px solid rgba(245,196,0,.2);border-radius:50px;padding:7px 14px;transition:all .2s;cursor:pointer;}
 .svc-btn:hover{background:rgba(245,196,0,.16);gap:10px;}
 
+/* ── TRABALHOS RECENTES (fotos passando) ── */
+.works-section{background:var(--dark2);padding:0 0 110px;position:relative;overflow:hidden;}
+.works-section::before{content:'';position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:min(1100px,120vw);height:420px;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(245,196,0,.07),transparent 70%);pointer-events:none;}
+.works-header{text-align:center;margin-bottom:44px;position:relative;}
+.works-live{display:inline-flex;align-items:center;gap:8px;}
+.works-live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(245,196,0,.6);animation:works-pulse 2s ease-out infinite;}
+@keyframes works-pulse{70%{box-shadow:0 0 0 8px rgba(245,196,0,0);}100%{box-shadow:0 0 0 0 rgba(245,196,0,0);}}
+.works-rows{display:flex;flex-direction:column;gap:14px;position:relative;}
+.works-row{width:100%;overflow:hidden;mask-image:linear-gradient(to right,transparent,#000 clamp(24px,8vw,140px),#000 calc(100% - clamp(24px,8vw,140px)),transparent);}
+.works-track{display:flex;gap:14px;width:max-content;animation:works-slide var(--works-dur,60s) linear infinite;}
+.works-row.reverse .works-track{animation-direction:reverse;}
+.works-row:hover .works-track{animation-play-state:paused;}
+@keyframes works-slide{to{transform:translateX(calc(-50% - 7px));}}
+.work-card{flex:none;position:relative;height:clamp(210px,24vw,300px);aspect-ratio:3/4;border-radius:16px;overflow:hidden;border:1px solid var(--gray);background:var(--dark3);cursor:zoom-in;padding:0;font:inherit;color:inherit;transition:border-color .3s;}
+.work-card.wide{aspect-ratio:4/3;}
+.work-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
+.work-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,13,.82) 0%,rgba(13,13,13,0) 45%);pointer-events:none;}
+.work-card:hover{border-color:rgba(245,196,0,.45);}
+.work-card:hover img{transform:scale(1.06);}
+.work-card:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.work-chip{position:absolute;left:12px;bottom:12px;z-index:1;font-size:.66rem;font-weight:700;letter-spacing:.04em;color:var(--gold);background:rgba(13,13,13,.62);backdrop-filter:blur(8px);border:1px solid rgba(245,196,0,.25);border-radius:50px;padding:5px 11px;white-space:nowrap;}
+.works-cta{display:flex;justify-content:center;margin-top:44px;position:relative;}
+@media (prefers-reduced-motion:reduce){
+  .works-row{overflow-x:auto;mask-image:none;}
+  .works-track{animation:none;}
+  .work-card[aria-hidden="true"]{display:none;}
+}
+@media(max-width:600px){.works-section{padding-bottom:80px;}.works-rows{gap:10px;}.works-track{gap:10px;}.work-chip{font-size:.6rem;padding:4px 9px;left:10px;bottom:10px;}}
+
 /* ── SERVICE MODAL ── */
 .svc-modal-overlay{position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.88);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .svc-modal-overlay.open{opacity:1;pointer-events:all;}
@@ -949,6 +978,64 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
     </div>
   </div>
 </section>
+
+<!-- ══ TRABALHOS RECENTES ══ -->
+<section class="works-section" id="trabalhos" aria-labelledby="trabalhos-titulo">
+  <div class="container works-header gsap-fade">
+    <div class="tag works-live">Trabalhos recentes</div>
+    <h2 class="headline" id="trabalhos-titulo" style="text-align:center;">Instalações <em>reais</em>,<br>feitas pela nossa equipe.</h2>
+    <p class="subtext" style="text-align:center;margin:12px auto 0;max-width:500px;">Câmeras, cercas, portões e controle de acesso instalados em Alphaville, Barueri, Santana de Parnaíba e Cajamar.</p>
+  </div>
+  <div class="works-rows">
+    <div class="works-row"><div class="works-track" data-row="0"></div></div>
+    <div class="works-row reverse"><div class="works-track" data-row="1"></div></div>
+  </div>
+  <div class="works-cta gsap-fade">
+    <a href="https://wa.me/5511957696353?text=Ol%C3%A1!%20Vi%20os%20trabalhos%20no%20site%20da%20L.S%20Now%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn-gold" onclick="gtag_report_conversion();">
+      Quero um orçamento
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+<script>
+  (() => {
+    // [arquivo, serviço, foto deitada?] — para adicionar fotos novas, é só incluir uma linha aqui
+    const rows = [
+      [
+        ['camera 1.webp','Câmera de Segurança',1], ['cerca2.webp','Cerca Elétrica',0], ['portao.webp','Automatização de Portão',1],
+        ['porteiro6.webp','Controle de Acesso',0], ['camera3.webp','Câmera de Segurança',1], ['alarme2.webp','Alarme',0],
+        ['videoporteiro.webp','Vídeo Porteiro',1], ['camera4.webp','Câmera de Segurança',0], ['cerca1.webp','Cerca Elétrica',1],
+        ['portyeiro5.webp','Controle de Acesso',0], ['camera9.webp','Câmera de Segurança',1],
+      ],
+      [
+        ['alarme1.webp','Alarme',1], ['portao1.webp','Automatização de Portão',0], ['camera 5.webp','Câmera de Segurança',1],
+        ['videoporteiro2.webp','Vídeo Porteiro',0], ['camera 6.webp','Câmera de Segurança',1], ['cerca3.webp','Cerca Elétrica',0],
+        ['alarmee.webp','Alarme',1], ['porteiro7.webp','Controle de Acesso',0], ['camera10.webp','Câmera de Segurança',1],
+        ['camera 2.webp','Câmera de Segurança',0], ['camera8.webp','Câmera de Segurança',1],
+      ],
+    ];
+    const card = ([src, label, wide], hidden) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'work-card' + (wide ? ' wide' : '');
+      if (hidden) { b.setAttribute('aria-hidden', 'true'); b.tabIndex = -1; }
+      b.onclick = () => openLightbox(src);
+      const img = new Image();
+      img.src = src; img.alt = hidden ? '' : `${label} instalado pela L.S Now`;
+      img.loading = 'lazy'; img.decoding = 'async';
+      const chip = document.createElement('span');
+      chip.className = 'work-chip'; chip.textContent = label;
+      b.append(img, chip);
+      return b;
+    };
+    document.querySelectorAll('#trabalhos .works-track').forEach(track => {
+      const items = rows[track.dataset.row];
+      items.forEach(i => track.append(card(i, false)));
+      items.forEach(i => track.append(card(i, true)));   // cópia para o loop infinito
+      track.style.setProperty('--works-dur', `${items.length * 6}s`);
+    });
+  })();
+</script>
 
 <!-- SERVICE MODAL -->
 <div class="svc-modal-overlay" id="svcModalOverlay" onclick="closeSvcOutside(event)">

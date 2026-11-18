@@ -494,16 +494,24 @@ body{font-family:var(--font);background:var(--black);color:var(--white);overflow
 .demo-btn p{font-size:.72rem;color:var(--light);}
 
 /* ── CLIENTS ── */
-.clients-section{background:var(--black);padding:110px 0;}
-.clients-header{text-align:center;margin-bottom:56px;}
-.clients-logos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:920px;margin:0 auto;}
-.client-logo-card{background:#fff;border:1px solid #ddd;border-radius:16px;padding:18px 14px 14px;display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;transition:border-color .3s,background .3s,transform .2s;min-height:120px;}
-.client-logo-card:hover{border-color:rgba(184,154,0,.4);background:#f0f0f0;transform:translateY(-3px);}
-.client-logo-img-wrap{width:100%;background:#fff;border-radius:8px;padding:10px 8px;display:flex;align-items:center;justify-content:center;min-height:64px;flex:1;}
-.client-logo-img-wrap img{max-width:100%;max-height:48px;width:auto;height:auto;object-fit:contain;display:block;}
-.client-logo-placeholder{width:100%;background:var(--dark3);border:1.5px dashed var(--gray);border-radius:8px;padding:12px 8px;display:flex;align-items:center;justify-content:center;min-height:64px;flex:1;}
-.client-logo-placeholder svg{color:var(--mid);}
-.client-logo-name{font-size:.7rem;font-weight:700;color:#777;letter-spacing:.06em;text-transform:uppercase;margin-top:9px;}
+.clients-section{background:#f5f5f7;color:#0d0d0d;padding:32px 0 38px;scroll-margin-top:76px;}
+.clients-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;}
+.clients-header h2{font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;}
+.clients-toggle{background:transparent;border:0;color:#555;font:inherit;font-size:.75rem;text-decoration:underline;cursor:pointer;padding:8px 0;}
+.clients-slider{overflow-x:auto;}
+.clients-track{display:flex;width:max-content;}
+.clients-logos{display:flex;flex:none;align-items:center;justify-content:space-around;gap:12px;min-width:100vw;list-style:none;margin:0;padding:0 6px;}
+.clients-logos li{flex:none;width:clamp(112px,11vw,156px);height:76px;display:grid;place-items:center;background:#fff;border:1px solid #e9e9ed;border-radius:12px;}
+.clients-logos img{display:block;width:calc(100% - 24px);height:48px;object-fit:contain;}
+.clients-animated .clients-slider{overflow:hidden;}
+.clients-animated .clients-track{animation:clients-slide 32s linear infinite reverse;}
+.clients-paused .clients-track{animation-play-state:paused;}
+@keyframes clients-slide{to{transform:translateX(-50%);}}
+@media (prefers-reduced-motion:reduce){
+  .clients-animated .clients-slider{overflow-x:auto;}
+  .clients-animated .clients-track{animation:none;}
+  .clients-logos[aria-hidden="true"],.clients-toggle{display:none;}
+}
 
 /* ── REVIEWS ── */
 .reviews-section{background:var(--black);padding:100px 0;overflow:hidden;}
@@ -743,7 +751,6 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
   .founder-wrap{grid-template-columns:1fr;gap:48px;}
   .founder-photo-card{max-width:320px;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
-  .clients-logos-grid{grid-template-columns:repeat(3,1fr);}
   .contact-grid{grid-template-columns:1fr;gap:44px;}
   .footer-top{grid-template-columns:1fr 1fr;}
   .svc-modal-gallery{grid-template-columns:repeat(2,1fr);}
@@ -752,7 +759,6 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
   .container{padding:0 20px;}.section{padding:80px 0;}
   .services-grid-6{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:1fr 1fr;}
-  .clients-logos-grid{grid-template-columns:repeat(2,1fr);}
   .form-row{grid-template-columns:1fr;}
   .footer-top{grid-template-columns:1fr;}
   .svc-modal-gallery{grid-template-columns:1fr 1fr;}
@@ -828,6 +834,47 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
     <span class="scroll-txt">Scroll</span>
   </div>
 </section>
+
+<!-- ══ CLIENTS ══ -->
+<section class="clients-section" id="clientes" aria-labelledby="clientes-titulo">
+  <div class="clients-header container">
+    <h2 id="clientes-titulo">Empresas que confiam na L.S Now</h2>
+    <button type="button" class="clients-toggle" hidden>Pausar animação</button>
+  </div>
+  <div class="clients-slider">
+    <div class="clients-track">
+      <ul class="clients-logos" role="list">
+        <li><img src="img/sabesp.png" alt="Sabesp" loading="lazy" decoding="async"></li>
+        <li><img src="img/Logo_Cacau_Show-removebg-preview.avif" alt="Cacau Show" loading="lazy" decoding="async"></li>
+        <li><img src="img/logo.avif" alt="Floractive" loading="lazy" decoding="async"></li>
+        <li><img src="img/MARDEK-PISOS-NAUTICOS-removebg-preview.avif" alt="Mardek Pisos Nauticos" loading="lazy" decoding="async"></li>
+        <li><img src="img/LUBIAN-PLASTICOS-removebg-preview.avif" alt="Lubian" loading="lazy" decoding="async"></li>
+        <li><img src="img/image-removebg-preview (3).webp" alt="Seu Dentista" loading="lazy" decoding="async"></li>
+        <li><img src="img/images__2_-removebg-preview.avif" alt="Phyto Green" loading="lazy" decoding="async"></li>
+        <li><img src="img/339654111_772318961074927_2079262801274745262_n (1).webp" alt="Óleo Novo" loading="lazy" decoding="async"></li>
+        <li><img src="img/401922176_713785567281562_1065588810008170559_n.webp" alt="Tok Iluminar" loading="lazy" decoding="async"></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    const section = document.getElementById('clientes');
+    const track = section.querySelector('.clients-track');
+    const button = section.querySelector('.clients-toggle');
+    const duplicate = track.firstElementChild.cloneNode(true);
+    duplicate.setAttribute('aria-hidden', 'true');
+    duplicate.querySelectorAll('img').forEach(image => image.loading = 'eager');
+    track.append(duplicate);
+    section.classList.add('clients-animated');
+    button.hidden = false;
+
+    button.addEventListener('click', () => {
+      const paused = section.classList.toggle('clients-paused');
+      button.textContent = paused ? 'Retomar animação' : 'Pausar animação';
+    });
+  })();
+</script>
 
 <!-- ══ STORY ══ -->
 <section class="section section-dark founder-section" id="sobre">
@@ -987,66 +1034,6 @@ footer{background:var(--black);border-top:1px solid var(--gray);padding:52px 48p
     </div>
   </div>
 </section> == -->
-
-<!-- ══ CLIENTS ══ -->
-<section class="clients-section" id="clientes" style="background:#f5f5f7;padding:110px 0;">
-  <div class="container">
-    <div class="clients-header gsap-fade">
-      <div class="tag" style="color:#b89a00;">Nossos Clientes</div>
-      <h2 class="headline" style="text-align:center;color:#0d0d0d;">Empresas que <span style="color:#b89a00;font-style:normal;">confiam</span><br>na L.S Now.</h2>
-      <p class="subtext" style="text-align:center;margin:12px auto 0;max-width:420px;color:#555;">Atendemos condomínios, residências, empresas e estabelecimentos de toda a região.</p>
-    </div>
-    <div class="clients-logos-grid">
-      <div class="client-logo-card gsap-fade">
-        <div class="client-logo-img-wrap">
-          <img src="img/Logo_Cacau_Show-removebg-preview.avif" alt="Cacau Show" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
-        </div>
-        <div class="client-logo-name">Cacau Show</div>
-      </div>
-       <div class="client-logo-card gsap-fade">
-        <div class="client-logo-img-wrap">
-          <img src="img/logo.avif" alt="Floractive" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
-        </div>
-        <div class="client-logo-name">Floractive</div>
-      </div>
-       <div class="client-logo-card gsap-fade">
-        <div class="client-logo-img-wrap">
-          <img src="img/MARDEK-PISOS-NAUTICOS-removebg-preview.avif" alt="Mardek Pisos Nauticos" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
-        </div>
-        <div class="client-logo-name">Mardek Pisos Nauticos</div>
-      </div>
-      <div class="client-logo-card gsap-fade">
-        <div class="client-logo-img-wrap">
-          <img src="img/LUBIAN-PLASTICOS-removebg-preview.avif" alt="Lubian" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
-        </div>
-        <div class="client-logo-name">lubian</div>
-      </div>
-      <div class="client-logo-card gsap-fade">
-        <div class="client-logo-img-wrap">
-          <img src="img/image-removebg-preview (3).webp" alt="Logo Seu Dentista, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
-        </div>
-        <div class="client-logo-name">Seu Dentista</div>
-      </div>
-      <div class="client-logo-card gsap-fade">
-        <div class="client-logo-img-wrap">
-          <img src="img/images__2_-removebg-preview.avif" alt="Phyto Green" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
-        </div>
-        <div class="client-logo-name">Phyto Green</div>
-      </div>
-      <div class="client-logo-card gsap-fade">
-        <div class="client-logo-img-wrap">
-          <img src="img/339654111_772318961074927_2079262801274745262_n (1).webp" alt="Logo Óleo Novo — Super Troca de Óleo, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
-        </div>
-        <div class="client-logo-name">óleo novo</div>
-      </div>
-      <div class="client-logo-card gsap-fade">
-        <div class="client-logo-img-wrap">
-          <img src="img/401922176_713785567281562_1065588810008170559_n.webp" alt="Logo Tok Iluminar, cliente da L.S Now" onerror="this.parentNode.className='client-logo-placeholder';this.parentNode.innerHTML='<svg width=28 height=28 viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18M9 21V9\'/></svg>'">
-        </div>
-        <div class="client-logo-name">tok iluminar</div>
-      </div>
-  </div>
-</section>
 
 <!-- ══ REVIEWS CAROUSEL ══ -->
 <section class="reviews-section" id="avaliacoes">
